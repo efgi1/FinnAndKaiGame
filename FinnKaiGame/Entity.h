@@ -3,10 +3,13 @@
 #include <tuple>
 #include <string>
 #include "TransformComponent.h"
+#include "AnimationComponent.h"
 
 class EntityManager;
 
-typedef std::tuple<CTransform
+typedef std::tuple<
+  CTransform,
+  CAnimation
 > ComponentTuple;
 
 class Entity

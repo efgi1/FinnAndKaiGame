@@ -45,9 +45,6 @@
     <ClCompile Include="EntityManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Entity.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Animation.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -57,13 +54,19 @@
     <ClCompile Include="TestScene.cpp">
       <Filter>Header Files\Test</Filter>
     </ClCompile>
-    <ClCompile Include="TestDrawSystem.cpp">
+    <ClCompile Include="TestRenderSystem.cpp">
       <Filter>Header Files\Test\Systems</Filter>
     </ClCompile>
     <ClCompile Include="TestInputSystem.cpp">
       <Filter>Header Files\Test\Systems</Filter>
     </ClCompile>
     <ClCompile Include="TestSystem.cpp">
+      <Filter>Header Files\Test\Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="TestAnimationSystem.cpp">
+      <Filter>Header Files\Test\Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="TestCollisionSystem.cpp">
       <Filter>Header Files\Test\Systems</Filter>
     </ClCompile>
   </ItemGroup>
@@ -101,7 +104,7 @@
     <ClInclude Include="TestScene.h">
       <Filter>Header Files\Test</Filter>
     </ClInclude>
-    <ClInclude Include="TestDrawSystem.h">
+    <ClInclude Include="TestRenderSystem.h">
       <Filter>Header Files\Test\Systems</Filter>
     </ClInclude>
     <ClInclude Include="TestInputSystem.h">
@@ -115,6 +118,27 @@
     </ClInclude>
     <ClInclude Include="TestMovementSystem.h">
       <Filter>Header Files\Test\Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="TestAnimationSystem.h">
+      <Filter>Header Files\Test\Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="AnimationComponent.h">
+      <Filter>Header Files\Test\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="TestCollisionSystem.h">
+      <Filter>Header Files\Test\Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="BoundingBoxComponent.h">
+      <Filter>Header Files\Test\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="LifeSpanComponent.h">
+      <Filter>Header Files\Test\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="GravityComponent.h">
+      <Filter>Header Files\Test\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="StateComponent.h">
+      <Filter>Header Files\Test\Components</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -2,11 +2,11 @@
 #include "ISystem.h"
 #include "GameEngine.h"
 
-class TestDrawSystem :
+class TestRenderSystem :
     public ISystem
 {
 public:
-  TestDrawSystem() : ISystem() {  }
+  TestRenderSystem() : ISystem() {  }
 
   void operator()() override;
 };

@@ -11,6 +11,8 @@ void GameEngine::init()
 	m_window = SDL_CreateWindow("Test", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, WINDOW_WIDTH, WINDOW_HEIGHT, SDL_WINDOW_SHOWN);
 	m_renderer = SDL_CreateRenderer(m_window, -1, SDL_RENDERER_ACCELERATED);
 	m_entityManager = std::make_unique<EntityManager>();
+	m_assetManager = std::make_unique<AssetManager>();
+	
 }
 
 void GameEngine::update()
@@ -31,12 +33,12 @@ void GameEngine::run()
 
 	//Update the surface
 	SDL_UpdateWindowSurface(m_window);
+	m_assetManager->loadFromFile("C:\\Users\\nateh\\Downloads\\kai.txt");
 
 	m_scene = std::make_unique<TestScene>();
-	SDL_Event event;
 	while (m_running)
 	{
-		SDL_RenderClear(m_renderer);
+		//SDL_RenderClear(m_renderer);
 		update();
 	}
 }
@@ -55,5 +57,6 @@ bool GameEngine::isRunning()
 {
 	return m_running;
 }
+
 
 

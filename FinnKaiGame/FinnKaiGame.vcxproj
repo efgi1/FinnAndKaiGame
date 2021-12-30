@@ -123,7 +123,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -145,27 +145,35 @@
   <ItemGroup>
     <ClCompile Include="Animation.cpp" />
     <ClCompile Include="AssetManager.cpp" />
-    <ClCompile Include="Entity.cpp" />
     <ClCompile Include="EntityManager.cpp" />
     <ClCompile Include="FinnKaiGame.cpp" />
     <ClCompile Include="GameEngine.cpp" />
-    <ClCompile Include="TestDrawSystem.cpp" />
+    <ClCompile Include="TestAnimationSystem.cpp" />
+    <ClCompile Include="TestCollisionSystem.cpp" />
+    <ClCompile Include="TestRenderSystem.cpp" />
     <ClCompile Include="TestInputSystem.cpp" />
     <ClCompile Include="TestScene.cpp" />
     <ClCompile Include="TestSystem.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h" />
+    <ClInclude Include="AnimationComponent.h" />
     <ClInclude Include="AssetManager.h" />
+    <ClInclude Include="BoundingBoxComponent.h" />
+    <ClInclude Include="GravityComponent.h" />
     <ClInclude Include="ICommand.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="EntityManager.h" />
     <ClInclude Include="GameEngine.h" />
     <ClInclude Include="IComponent.h" />
+    <ClInclude Include="LifeSpanComponent.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="JumpCommand.h" />
     <ClInclude Include="ISystem.h" />
-    <ClInclude Include="TestDrawSystem.h" />
+    <ClInclude Include="StateComponent.h" />
+    <ClInclude Include="TestAnimationSystem.h" />
+    <ClInclude Include="TestCollisionSystem.h" />
+    <ClInclude Include="TestRenderSystem.h" />
     <ClInclude Include="TestInputSystem.h" />
     <ClInclude Include="TestMovementSystem.h" />
     <ClInclude Include="TestScene.h" />
