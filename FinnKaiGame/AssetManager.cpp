@@ -52,7 +52,7 @@ SDL_Texture* AssetManager::getTexture(const std::string& textureName) const
 
 const Animation& AssetManager::getAnimation(const std::string& animationName) const
 {
-  return m_animationMap.at(animationName);
+  return  m_animationMap.at(animationName);
 }
 
 void AssetManager::addTexture(const std::string& textureName, const std::string& path, bool smooth)
@@ -67,7 +67,7 @@ void AssetManager::addTexture(const std::string& textureName, const std::string&
   m_textureMap[textureName] = texture;
   //TODO smooth up
   glm::vec2 size(loadedSurface->w, loadedSurface->h);
-  Animation animation(textureName, size, 8, 1);
+  Animation animation(textureName, size, 4, 0.025);
   m_animationMap[textureName] = animation;
   SDL_FreeSurface(loadedSurface);
 }

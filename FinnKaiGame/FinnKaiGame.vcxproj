@@ -178,6 +178,7 @@
     <ClInclude Include="TestMovementSystem.h" />
     <ClInclude Include="TestScene.h" />
     <ClInclude Include="TestSystem.h" />
+    <ClInclude Include="Texture.h" />
     <ClInclude Include="TransformComponent.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -38,7 +38,7 @@ void GameEngine::run()
 	m_scene = std::make_unique<TestScene>();
 	while (m_running)
 	{
-		//SDL_RenderClear(m_renderer);
+		SDL_RenderClear(m_renderer);
 		update();
 	}
 }

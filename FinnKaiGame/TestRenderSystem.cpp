@@ -13,8 +13,8 @@ void TestRenderSystem::operator()()
 		auto transform = entity->getComponent<CTransform>();
 		if (animation.implemented && transform.implemented)
 		{
-			auto spriteRect = animation.animation.getSprite();
-			auto texture = GameEngine::instance()->assetManager()->getTexture(animation.animation.getName());
+			auto spriteRect = entity->getComponent<CAnimation>().animation.getSprite();
+			auto texture = GameEngine::instance()->assetManager()->getTexture("kai");
 			auto renderer = GameEngine::instance()->renderer();
 			SDL_Rect renderRect;
 			renderRect.w = spriteRect.w * static_cast<int>(transform.scale.x);
@@ -22,8 +22,7 @@ void TestRenderSystem::operator()()
 			renderRect.x = static_cast<int>(transform.pos.x);
 			renderRect.y = static_cast<int>(transform.pos.y);
 			SDL_RenderCopy(renderer, texture, &spriteRect, &renderRect);
-			animation.animation.update();
-
+			entity->getComponent<CAnimation>().animation.update();
 		}
 	}
 	SDL_RenderPresent(renderer);

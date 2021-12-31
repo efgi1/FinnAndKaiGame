@@ -5,7 +5,7 @@ Animation::Animation(const std::string& name, glm::vec2& textureSize) :
 {
 }
 
-Animation::Animation(const std::string& name, glm::vec2& textureSize, size_t frameCount, size_t speed) :
+Animation::Animation(const std::string& name, glm::vec2& textureSize, size_t frameCount, float speed) :
 	m_name(name),
 	m_frameCount(frameCount),
 	m_speed(speed),
@@ -24,8 +24,8 @@ Animation::~Animation()
 
 void Animation::update()
 {
-	m_currentFrame = (m_currentFrame + m_speed) % m_frameCount;
-	m_sprite.x = static_cast<int>(m_currentFrame) * m_sprite.x;
+	m_currentFrame += m_speed;
+	m_sprite.x = static_cast<int>(m_currentFrame) % m_frameCount * (m_sprite.w);
 }
 
 bool Animation::hasEnded() const
@@ -38,8 +38,7 @@ const std::string& Animation::getName() const
 	return m_name;
 }
 
-const SDL_Rect& Animation::
-getSprite() const
+const SDL_Rect& Animation::getSprite() const
 {
 	return m_sprite;
 }

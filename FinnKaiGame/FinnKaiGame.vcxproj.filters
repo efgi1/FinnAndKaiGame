@@ -140,5 +140,8 @@
     <ClInclude Include="StateComponent.h">
       <Filter>Header Files\Test\Components</Filter>
     </ClInclude>
+    <ClInclude Include="Texture.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
