@@ -2,13 +2,10 @@
 #include <fstream>
 #include <iostream>
 #include "GameEngine.h"
+#include "Texture.h"
 
 AssetManager::~AssetManager()
 {
-  for (auto texture : m_textureMap)
-  {
-    SDL_DestroyTexture(texture.second);
-  }
 }
 
 void AssetManager::loadFromFile(const std::string& path)
@@ -28,7 +25,8 @@ void AssetManager::loadFromFile(const std::string& path)
     else if (str == "Animation")
     {
       std::string name, texture;
-      size_t frames, speed;
+      size_t frames;
+      float speed;
       file >> name >> texture >> frames >> speed;
       addAnimation(name, texture, frames, speed);
     }
@@ -47,32 +45,25 @@ void AssetManager::loadFromFile(const std::string& path)
 
 SDL_Texture* AssetManager::getTexture(const std::string& textureName) const
 {
-  return m_textureMap.at(textureName);
+  return m_textureMap.at(textureName).get()->getSDLTexture();
 }
 
-const Animation& AssetManager::getAnimation(const std::string& animationName) const
+Animation* AssetManager::getAnimation(const std::string& animationName) const
 {
-  return  m_animationMap.at(animationName);
+  return  m_animationMap.at(animationName).get();
 }
 
 void AssetManager::addTexture(const std::string& textureName, const std::string& path, bool smooth)
 {
-  std::ifstream test(path);
-  SDL_Surface* loadedSurface = IMG_Load(path.c_str());
-  if (loadedSurface == nullptr)
-  {
-    std::cout << "Reason: " << SDL_GetError() << std::endl;
-  }
-  SDL_Texture* texture = SDL_CreateTextureFromSurface(GameEngine::instance()->renderer(), loadedSurface);
+  std::shared_ptr<Texture> texture = std::make_shared<Texture>("kai");
+  texture->createTexture(path);
+  glm::vec2 size = texture->getSize();
   m_textureMap[textureName] = texture;
-  //TODO smooth up
-  glm::vec2 size(loadedSurface->w, loadedSurface->h);
-  Animation animation(textureName, size, 4, 0.025);
-  m_animationMap[textureName] = animation;
-  SDL_FreeSurface(loadedSurface);
 }
 
-void AssetManager::addAnimation(const std::string& animationName, const std::string& textureName, size_t frameCount, size_t speed)
+void AssetManager::addAnimation(const std::string& animationName, const std::string& textureName, size_t frameCount, float speed)
 {
-  
+    auto size = m_textureMap[textureName]->getSize();
+    std::shared_ptr<Animation> animation = std::make_unique<Animation>(animationName, size, frameCount, speed);
+    m_animationMap[animationName] = animation;
 }

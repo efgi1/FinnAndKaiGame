@@ -33,7 +33,7 @@ void GameEngine::run()
 
 	//Update the surface
 	SDL_UpdateWindowSurface(m_window);
-	m_assetManager->loadFromFile("C:\\Users\\nateh\\Downloads\\kai.txt");
+	m_assetManager->loadFromFile(".\\kai.txt");
 
 	m_scene = std::make_unique<TestScene>();
 	while (m_running)

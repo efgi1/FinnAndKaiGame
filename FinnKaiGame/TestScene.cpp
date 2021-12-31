@@ -15,6 +15,6 @@ TestScene::TestScene() : Scene()
   auto entity = GameEngine::instance()->entityManager()->addEntity("test");
   entity->addComponent<CTransform>(glm::vec2(0,0));
   entity->getComponent<CTransform>().velocity = glm::vec2(1, 1);
-  entity->addComponent<CAnimation>(GameEngine::instance()->assetManager()->getAnimation("kai"), false);
+  entity->addComponent<CAnimation>(*(GameEngine::instance()->assetManager()->getAnimation("kai_running")), false);
 
 }
