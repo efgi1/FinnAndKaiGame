@@ -1,2 +1,3 @@
 Texture kai kai.png
 Animation kai_running kai 4 0.03
+Animation kai_standing kai 4 0

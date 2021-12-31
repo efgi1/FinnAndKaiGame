@@ -4,12 +4,14 @@
 #include <string>
 #include "TransformComponent.h"
 #include "AnimationComponent.h"
+#include "InputComponent.h"
 
 class EntityManager;
 
 typedef std::tuple<
-  CTransform,
-  CAnimation
+	CTransform,
+	CAnimation,
+	CInput
 > ComponentTuple;
 
 class Entity

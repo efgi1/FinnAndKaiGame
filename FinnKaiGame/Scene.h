@@ -4,30 +4,28 @@
 #include <vector>
 #include <memory>
 #include "ISystem.h"
-#include "GameEngine.h"
+#include "Entity.h"
 
-class GameEngine;
+class ISystem;
 
 class Scene
 {
 public:
   Scene() : m_paused(false) {}
 
-  void update() {
-    for (auto& system : m_systems)
-    {
-      if (!m_paused || !system->pausable)
-        (*system)();
-    }
+  void update();
+
+  template <typename T>
+  void addSystem()
+  {
+	  m_systems.push_back(std::make_unique<T>(this));
   }
 
-  void addSystem(std::unique_ptr<ISystem> system)
-  {
-    m_systems.push_back(std::move(system));
-  }
+  std::shared_ptr<Entity> m_player;
 
 protected:
   std::vector<std::unique_ptr<ISystem>> m_systems;
   bool m_paused;
+  
 };
 

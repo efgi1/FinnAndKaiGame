@@ -6,7 +6,7 @@ class TestRenderSystem :
     public ISystem
 {
 public:
-  TestRenderSystem() : ISystem() {  }
+  TestRenderSystem(Scene* scene) : ISystem(scene) {  }
 
   void operator()() override;
 };

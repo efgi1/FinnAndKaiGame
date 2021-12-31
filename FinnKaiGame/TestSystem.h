@@ -8,7 +8,7 @@
 class TestSystem : public ISystem
 {
 public:
-	TestSystem() : ISystem() { pausable = true; }
+	TestSystem(Scene* scene) : ISystem(scene) { pausable = true; }
 
 	void operator()() override;
 };

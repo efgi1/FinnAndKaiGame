@@ -1,4 +1,5 @@
 #include "GameEngine.h"
+#include "TestScene.h"
 
 
 void GameEngine::init()
@@ -12,12 +13,13 @@ void GameEngine::init()
 	m_renderer = SDL_CreateRenderer(m_window, -1, SDL_RENDERER_ACCELERATED);
 	m_entityManager = std::make_unique<EntityManager>();
 	m_assetManager = std::make_unique<AssetManager>();
+	m_sceneManager = std::make_unique<SceneManager>();
 	
 }
 
 void GameEngine::update()
 {
-	m_scene->update();
+	m_sceneManager->update();
 }
 
 
@@ -35,7 +37,7 @@ void GameEngine::run()
 	SDL_UpdateWindowSurface(m_window);
 	m_assetManager->loadFromFile(".\\kai.txt");
 
-	m_scene = std::make_unique<TestScene>();
+	m_sceneManager->setCurrentScene(std::make_unique<TestScene>());
 	while (m_running)
 	{
 		SDL_RenderClear(m_renderer);

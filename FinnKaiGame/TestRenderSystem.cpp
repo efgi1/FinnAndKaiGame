@@ -17,8 +17,8 @@ void TestRenderSystem::operator()()
 			auto texture = GameEngine::instance()->assetManager()->getTexture("kai");
 			auto renderer = GameEngine::instance()->renderer();
 			SDL_Rect renderRect;
-			renderRect.w = spriteRect.w * static_cast<int>(transform.scale.x);
-			renderRect.h = spriteRect.h * static_cast<int>(transform.scale.y);
+			renderRect.w = static_cast<int>(spriteRect.w * transform.scale.x);
+			renderRect.h = static_cast<int>(spriteRect.h * transform.scale.y);
 			renderRect.x = static_cast<int>(transform.pos.x);
 			renderRect.y = static_cast<int>(transform.pos.y);
 			SDL_RenderCopy(renderer, texture, &spriteRect, &renderRect);

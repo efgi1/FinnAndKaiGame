@@ -148,6 +148,8 @@
     <ClCompile Include="EntityManager.cpp" />
     <ClCompile Include="FinnKaiGame.cpp" />
     <ClCompile Include="GameEngine.cpp" />
+    <ClCompile Include="Scene.cpp" />
+    <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="TestAnimationSystem.cpp" />
     <ClCompile Include="TestCollisionSystem.cpp" />
     <ClCompile Include="TestRenderSystem.cpp" />
@@ -167,10 +169,12 @@
     <ClInclude Include="EntityManager.h" />
     <ClInclude Include="GameEngine.h" />
     <ClInclude Include="IComponent.h" />
+    <ClInclude Include="InputComponent.h" />
     <ClInclude Include="LifeSpanComponent.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="JumpCommand.h" />
     <ClInclude Include="ISystem.h" />
+    <ClInclude Include="SceneManager.h" />
     <ClInclude Include="StateComponent.h" />
     <ClInclude Include="TestAnimationSystem.h" />
     <ClInclude Include="TestCollisionSystem.h" />

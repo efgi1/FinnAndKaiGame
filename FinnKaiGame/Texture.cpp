@@ -1,5 +1,6 @@
 #include "Texture.h"
 #include "GameEngine.h"
+#include <iostream>
 
 Texture::Texture(const std::string name) :
 	m_name(name),

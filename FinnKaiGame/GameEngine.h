@@ -4,12 +4,9 @@
 #include <vector>
 #include <SDL.h>
 
-#include "Scene.h"
-#include "TestScene.h"
+#include "SceneManager.h"
 #include "EntityManager.h"
 #include "AssetManager.h"
-
-class TestScene;
 
 class GameEngine
 {
@@ -33,6 +30,7 @@ public:
   SDL_Renderer* renderer() { return m_renderer; }
   EntityManager* entityManager() { return m_entityManager.get(); };
   AssetManager* assetManager() { return m_assetManager.get(); }
+  SceneManager* sceneManager() { return m_sceneManager.get(); }
   bool isRunning();
 
 private:
@@ -45,8 +43,7 @@ private:
   SDL_Renderer* m_renderer;
   std::unique_ptr<AssetManager> m_assetManager;
   std::unique_ptr<EntityManager> m_entityManager;
-  std::unique_ptr<TestScene> m_scene;
- 
+  std::unique_ptr<SceneManager> m_sceneManager;
 
   bool m_running;
   void init();

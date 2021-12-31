@@ -4,7 +4,7 @@ class TestInputSystem :
     public ISystem
 {
 public:
-  TestInputSystem() : ISystem() {}
+  TestInputSystem(Scene* scene) : ISystem(scene) {}
   void operator()() override;
 };
 
