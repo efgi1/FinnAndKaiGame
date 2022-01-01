@@ -1,4 +1,4 @@
-#include "AssetManager.h"
+#include "Core/AssetManager.h"
 #include <fstream>
 #include <iostream>
 #include "GameEngine.h"
@@ -43,9 +43,9 @@ void AssetManager::loadFromFile(const std::string& path)
   }
 }
 
-SDL_Texture* AssetManager::getTexture(const std::string& textureName) const
+Texture* AssetManager::getTexture(const std::string& textureName) const
 {
-  return m_textureMap.at(textureName).get()->getSDLTexture();
+  return m_textureMap.at(textureName).get();
 }
 
 Animation* AssetManager::getAnimation(const std::string& animationName) const

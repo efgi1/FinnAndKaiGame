@@ -1,172 +1,144 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Source Files">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-    </Filter>
-    <Filter Include="Header Files">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
-    </Filter>
     <Filter Include="Resource Files">
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Header Files\Systems">
-      <UniqueIdentifier>{8feeb024-f255-4345-a066-acfd9dd2994c}</UniqueIdentifier>
+    <Filter Include="Core">
+      <UniqueIdentifier>{f8ed1386-e6f4-46e1-8c62-931842e20ec0}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Components">
-      <UniqueIdentifier>{83690569-cce2-4c82-8f36-29c8b9152228}</UniqueIdentifier>
+    <Filter Include="Common">
+      <UniqueIdentifier>{18560b5a-8597-4072-8fa9-3dbf48630080}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Commands">
-      <UniqueIdentifier>{7c008f6b-a4e4-444b-b865-7bd96a42cc88}</UniqueIdentifier>
+    <Filter Include="Components">
+      <UniqueIdentifier>{4d115809-ba76-4281-81f6-77f2d013d574}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Scenes">
-      <UniqueIdentifier>{11a34513-2b1b-47d1-bfea-5e1223ff981e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Test">
-      <UniqueIdentifier>{361286d0-8999-4829-82cd-df5f50358705}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Test\Systems">
-      <UniqueIdentifier>{5b16a5a7-473d-4738-99c5-dc3d5489be73}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Test\Components">
-      <UniqueIdentifier>{a6c14794-ea67-4ceb-88a7-2edd1e799782}</UniqueIdentifier>
+    <Filter Include="Systems">
+      <UniqueIdentifier>{9ee44d5b-0e49-4fc5-802b-6deb8e88a852}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="FinnKaiGame.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Core\AssetManager.cpp">
+      <Filter>Core</Filter>
     </ClCompile>
-    <ClCompile Include="GameEngine.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Core\EntityManager.cpp">
+      <Filter>Core</Filter>
     </ClCompile>
-    <ClCompile Include="EntityManager.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Core\GameEngine.cpp">
+      <Filter>Core</Filter>
     </ClCompile>
-    <ClCompile Include="Animation.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Core\SceneManager.cpp">
+      <Filter>Core</Filter>
     </ClCompile>
-    <ClCompile Include="AssetManager.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Common\Animation.cpp">
+      <Filter>Common</Filter>
     </ClCompile>
-    <ClCompile Include="TestScene.cpp">
-      <Filter>Header Files\Test</Filter>
+    <ClCompile Include="Common\Scene.cpp">
+      <Filter>Common</Filter>
     </ClCompile>
-    <ClCompile Include="TestRenderSystem.cpp">
-      <Filter>Header Files\Test\Systems</Filter>
+    <ClCompile Include="Common\Texture.cpp">
+      <Filter>Common</Filter>
     </ClCompile>
-    <ClCompile Include="TestInputSystem.cpp">
-      <Filter>Header Files\Test\Systems</Filter>
+    <ClCompile Include="FinnKaiGame.cpp" />
+    <ClCompile Include="TestScene.cpp" />
+    <ClCompile Include="Systems\TestAnimationSystem.cpp">
+      <Filter>Systems</Filter>
     </ClCompile>
-    <ClCompile Include="TestSystem.cpp">
-      <Filter>Header Files\Test\Systems</Filter>
+    <ClCompile Include="Systems\TestCollisionSystem.cpp">
+      <Filter>Systems</Filter>
     </ClCompile>
-    <ClCompile Include="TestAnimationSystem.cpp">
-      <Filter>Header Files\Test\Systems</Filter>
+    <ClCompile Include="Systems\TestInputSystem.cpp">
+      <Filter>Systems</Filter>
     </ClCompile>
-    <ClCompile Include="TestCollisionSystem.cpp">
-      <Filter>Header Files\Test\Systems</Filter>
+    <ClCompile Include="Systems\TestRenderSystem.cpp">
+      <Filter>Systems</Filter>
     </ClCompile>
-    <ClCompile Include="Texture.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="SceneManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Scene.cpp">
-      <Filter>Header Files</Filter>
+    <ClCompile Include="Systems\TestSystem.cpp">
+      <Filter>Systems</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="GameEngine.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Core\SceneManager.h">
+      <Filter>Core</Filter>
     </ClInclude>
-    <ClInclude Include="EntityManager.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Core\EntityManager.h">
+      <Filter>Core</Filter>
     </ClInclude>
-    <ClInclude Include="Entity.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Core\GameEngine.h">
+      <Filter>Core</Filter>
     </ClInclude>
-    <ClInclude Include="Animation.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Core\AssetManager.h">
+      <Filter>Core</Filter>
     </ClInclude>
-    <ClInclude Include="AssetManager.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Common\Animation.h">
+      <Filter>Common</Filter>
     </ClInclude>
-    <ClInclude Include="ISystem.h">
-      <Filter>Header Files\Systems</Filter>
+    <ClInclude Include="Common\Entity.h">
+      <Filter>Common</Filter>
     </ClInclude>
-    <ClInclude Include="ICommand.h">
-      <Filter>Header Files\Commands</Filter>
+    <ClInclude Include="Common\ICommand.h">
+      <Filter>Common</Filter>
     </ClInclude>
-    <ClInclude Include="JumpCommand.h">
-      <Filter>Header Files\Commands</Filter>
+    <ClInclude Include="Common\IComponent.h">
+      <Filter>Common</Filter>
     </ClInclude>
-    <ClInclude Include="IComponent.h">
-      <Filter>Header Files\Components</Filter>
+    <ClInclude Include="Common\ISystem.h">
+      <Filter>Common</Filter>
     </ClInclude>
-    <ClInclude Include="Scene.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Common\Scene.h">
+      <Filter>Common</Filter>
     </ClInclude>
-    <ClInclude Include="TestScene.h">
-      <Filter>Header Files\Test</Filter>
+    <ClInclude Include="Common\Texture.h">
+      <Filter>Common</Filter>
     </ClInclude>
-    <ClInclude Include="TestRenderSystem.h">
-      <Filter>Header Files\Test\Systems</Filter>
+    <ClInclude Include="TestScene.h" />
+    <ClInclude Include="Components\AnimationComponent.h">
+      <Filter>Components</Filter>
     </ClInclude>
-    <ClInclude Include="TestInputSystem.h">
-      <Filter>Header Files\Test\Systems</Filter>
+    <ClInclude Include="Components\BoundingBoxComponent.h">
+      <Filter>Components</Filter>
     </ClInclude>
-    <ClInclude Include="TestSystem.h">
-      <Filter>Header Files\Test\Systems</Filter>
+    <ClInclude Include="Components\GravityComponent.h">
+      <Filter>Components</Filter>
     </ClInclude>
-    <ClInclude Include="TransformComponent.h">
-      <Filter>Header Files\Test\Components</Filter>
+    <ClInclude Include="Components\InputComponent.h">
+      <Filter>Components</Filter>
     </ClInclude>
-    <ClInclude Include="TestMovementSystem.h">
-      <Filter>Header Files\Test\Systems</Filter>
+    <ClInclude Include="Components\LifeSpanComponent.h">
+      <Filter>Components</Filter>
     </ClInclude>
-    <ClInclude Include="TestAnimationSystem.h">
-      <Filter>Header Files\Test\Systems</Filter>
+    <ClInclude Include="Components\StateComponent.h">
+      <Filter>Components</Filter>
     </ClInclude>
-    <ClInclude Include="AnimationComponent.h">
-      <Filter>Header Files\Test\Components</Filter>
+    <ClInclude Include="Components\TransformComponent.h">
+      <Filter>Components</Filter>
     </ClInclude>
-    <ClInclude Include="TestCollisionSystem.h">
-      <Filter>Header Files\Test\Systems</Filter>
+    <ClInclude Include="Systems\TestAnimationSystem.h">
+      <Filter>Systems</Filter>
     </ClInclude>
-    <ClInclude Include="BoundingBoxComponent.h">
-      <Filter>Header Files\Test\Components</Filter>
+    <ClInclude Include="Systems\TestCollisionSystem.h">
+      <Filter>Systems</Filter>
     </ClInclude>
-    <ClInclude Include="LifeSpanComponent.h">
-      <Filter>Header Files\Test\Components</Filter>
+    <ClInclude Include="Systems\TestInputSystem.h">
+      <Filter>Systems</Filter>
     </ClInclude>
-    <ClInclude Include="GravityComponent.h">
-      <Filter>Header Files\Test\Components</Filter>
+    <ClInclude Include="Systems\TestMovementSystem.h">
+      <Filter>Systems</Filter>
     </ClInclude>
-    <ClInclude Include="StateComponent.h">
-      <Filter>Header Files\Test\Components</Filter>
+    <ClInclude Include="Systems\TestRenderSystem.h">
+      <Filter>Systems</Filter>
     </ClInclude>
-    <ClInclude Include="Texture.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="InputComponent.h">
-      <Filter>Header Files\Test\Components</Filter>
-    </ClInclude>
-    <ClInclude Include="SceneManager.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Systems\TestSystem.h">
+      <Filter>Systems</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="kai.png">
+    <Image Include="Assets\kai.png">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="kai.txt">
-      <Filter>Resource Files</Filter>
-    </Text>
+    <Text Include="config.txt" />
   </ItemGroup>
 </Project>

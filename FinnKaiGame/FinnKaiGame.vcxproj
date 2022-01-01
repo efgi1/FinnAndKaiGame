@@ -78,7 +78,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>C:\Libraries\glm;C:\Libraries\SDL2-2.0.18\include;$(IncludePath)</IncludePath>
+    <IncludePath>C:\Users\nateh\Desktop\Game\FinnKaiGame\FinnKaiGame\Components;C:\Users\nateh\Desktop\Game\FinnKaiGame\FinnKaiGame\Systems;C:\Users\nateh\Desktop\Game\FinnKaiGame\FinnKaiGame;C:\Users\nateh\Desktop\Game\FinnKaiGame\FinnKaiGame\Common;C:\Users\nateh\Desktop\Game\FinnKaiGame\FinnKaiGame\Core;C:\Libraries\glm;C:\Libraries\SDL2-2.0.18\include;$(IncludePath)</IncludePath>
     <LibraryPath>C:\Libraries\SDL2-2.0.18\lib\x64;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -143,54 +143,53 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Animation.cpp" />
-    <ClCompile Include="AssetManager.cpp" />
-    <ClCompile Include="EntityManager.cpp" />
+    <ClCompile Include="Common\Animation.cpp" />
+    <ClCompile Include="Common\Scene.cpp" />
+    <ClCompile Include="Common\Texture.cpp" />
+    <ClCompile Include="Core\AssetManager.cpp" />
+    <ClCompile Include="Core\EntityManager.cpp" />
+    <ClCompile Include="Core\GameEngine.cpp" />
+    <ClCompile Include="Core\SceneManager.cpp" />
     <ClCompile Include="FinnKaiGame.cpp" />
-    <ClCompile Include="GameEngine.cpp" />
-    <ClCompile Include="Scene.cpp" />
-    <ClCompile Include="SceneManager.cpp" />
-    <ClCompile Include="TestAnimationSystem.cpp" />
-    <ClCompile Include="TestCollisionSystem.cpp" />
-    <ClCompile Include="TestRenderSystem.cpp" />
-    <ClCompile Include="TestInputSystem.cpp" />
+    <ClCompile Include="Systems\TestAnimationSystem.cpp" />
+    <ClCompile Include="Systems\TestCollisionSystem.cpp" />
+    <ClCompile Include="Systems\TestInputSystem.cpp" />
+    <ClCompile Include="Systems\TestRenderSystem.cpp" />
+    <ClCompile Include="Systems\TestSystem.cpp" />
     <ClCompile Include="TestScene.cpp" />
-    <ClCompile Include="TestSystem.cpp" />
-    <ClCompile Include="Texture.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Animation.h" />
-    <ClInclude Include="AnimationComponent.h" />
-    <ClInclude Include="AssetManager.h" />
-    <ClInclude Include="BoundingBoxComponent.h" />
-    <ClInclude Include="GravityComponent.h" />
-    <ClInclude Include="ICommand.h" />
-    <ClInclude Include="Entity.h" />
-    <ClInclude Include="EntityManager.h" />
-    <ClInclude Include="GameEngine.h" />
-    <ClInclude Include="IComponent.h" />
-    <ClInclude Include="InputComponent.h" />
-    <ClInclude Include="LifeSpanComponent.h" />
-    <ClInclude Include="Scene.h" />
-    <ClInclude Include="JumpCommand.h" />
-    <ClInclude Include="ISystem.h" />
-    <ClInclude Include="SceneManager.h" />
-    <ClInclude Include="StateComponent.h" />
-    <ClInclude Include="TestAnimationSystem.h" />
-    <ClInclude Include="TestCollisionSystem.h" />
-    <ClInclude Include="TestRenderSystem.h" />
-    <ClInclude Include="TestInputSystem.h" />
-    <ClInclude Include="TestMovementSystem.h" />
+    <ClInclude Include="Common\Animation.h" />
+    <ClInclude Include="Common\Entity.h" />
+    <ClInclude Include="Common\ICommand.h" />
+    <ClInclude Include="Common\IComponent.h" />
+    <ClInclude Include="Common\ISystem.h" />
+    <ClInclude Include="Common\Scene.h" />
+    <ClInclude Include="Common\Texture.h" />
+    <ClInclude Include="Components\AnimationComponent.h" />
+    <ClInclude Include="Components\BoundingBoxComponent.h" />
+    <ClInclude Include="Components\GravityComponent.h" />
+    <ClInclude Include="Components\InputComponent.h" />
+    <ClInclude Include="Components\LifeSpanComponent.h" />
+    <ClInclude Include="Components\StateComponent.h" />
+    <ClInclude Include="Components\TransformComponent.h" />
+    <ClInclude Include="Core\AssetManager.h" />
+    <ClInclude Include="Core\EntityManager.h" />
+    <ClInclude Include="Core\GameEngine.h" />
+    <ClInclude Include="Core\SceneManager.h" />
+    <ClInclude Include="Systems\TestAnimationSystem.h" />
+    <ClInclude Include="Systems\TestCollisionSystem.h" />
+    <ClInclude Include="Systems\TestInputSystem.h" />
+    <ClInclude Include="Systems\TestMovementSystem.h" />
+    <ClInclude Include="Systems\TestRenderSystem.h" />
+    <ClInclude Include="Systems\TestSystem.h" />
     <ClInclude Include="TestScene.h" />
-    <ClInclude Include="TestSystem.h" />
-    <ClInclude Include="Texture.h" />
-    <ClInclude Include="TransformComponent.h" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="kai.png" />
+    <Image Include="Assets\kai.png" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="kai.txt" />
+    <Text Include="config.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

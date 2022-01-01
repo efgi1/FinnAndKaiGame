@@ -16,7 +16,7 @@ public:
 
   void loadFromFile(const std::string& path);
 
-  SDL_Texture* getTexture(const std::string& textureName) const;
+  Texture* getTexture(const std::string& textureName) const;
   Animation* getAnimation(const std::string& animationName) const;
   //const sf::Font& getFont(const std::string& fontName) const;
 

@@ -5,13 +5,15 @@
 #include "TransformComponent.h"
 #include "AnimationComponent.h"
 #include "InputComponent.h"
+#include "GravityComponent.h"
 
 class EntityManager;
 
 typedef std::tuple<
 	CTransform,
 	CAnimation,
-	CInput
+	CInput,
+	CGravity
 > ComponentTuple;
 
 class Entity

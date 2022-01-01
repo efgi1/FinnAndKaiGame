@@ -27,20 +27,11 @@ void GameEngine::run()
 {
 	
 	m_running = true;
-	//Get window surface
-	auto screenSurface = SDL_GetWindowSurface(m_window);
-
-	//Fill the surface white
-	SDL_FillRect(screenSurface, NULL, SDL_MapRGB(screenSurface->format, 100, 100, 255));
-
-	//Update the surface
-	SDL_UpdateWindowSurface(m_window);
-	m_assetManager->loadFromFile(".\\kai.txt");
+	m_assetManager->loadFromFile(".\\config.txt");
 
 	m_sceneManager->setCurrentScene(std::make_unique<TestScene>());
 	while (m_running)
 	{
-		SDL_RenderClear(m_renderer);
 		update();
 	}
 }

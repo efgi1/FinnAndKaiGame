@@ -24,8 +24,8 @@ Animation::~Animation()
 
 void Animation::update()
 {
-	m_currentFrame += m_speed;
 	m_sprite.x = static_cast<int>(m_currentFrame) % m_frameCount * (m_sprite.w);
+	m_currentFrame += m_speed;
 }
 
 bool Animation::hasEnded() const
