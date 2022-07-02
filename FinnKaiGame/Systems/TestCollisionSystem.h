@@ -1,5 +1,5 @@
 #pragma once
-#include "ISystem.h"
+#include "..\Common\ISystem.h"
 class TestCollisionSystem :
     public ISystem
 {

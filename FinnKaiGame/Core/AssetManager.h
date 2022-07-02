@@ -4,8 +4,8 @@
 #include <SDL.h>
 #include <SDL_image.h>
 #include <memory>
-#include "Animation.h"
-#include "Texture.h"
+#include "..\Common\Animation.h"
+#include "..\Common\Texture.h"
 
 class AssetManager
 {

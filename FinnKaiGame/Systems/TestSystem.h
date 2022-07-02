@@ -1,8 +1,8 @@
 #pragma once
 
-#include "ISystem.h"
+#include "..\Common\ISystem.h"
 #include <iostream>
-#include "GameEngine.h"
+#include "..\Core\GameEngine.h"
 
 
 class TestSystem : public ISystem

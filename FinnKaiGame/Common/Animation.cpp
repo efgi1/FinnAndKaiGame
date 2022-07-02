@@ -1,4 +1,4 @@
-#include "Animation.h"
+#include "..\Common\Animation.h"
 
 Animation::Animation(const std::string& name, glm::vec2& textureSize) : 
 	Animation(name, textureSize, 1, 0)

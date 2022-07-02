@@ -5,7 +5,7 @@
 #include <SDL.h>
 
 #include "SceneManager.h"
-#include "EntityManager.h"
+#include "..\Core\EntityManager.h"
 #include "AssetManager.h"
 
 class GameEngine

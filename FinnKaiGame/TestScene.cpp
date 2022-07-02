@@ -1,11 +1,11 @@
 #include "TestScene.h"
-#include "TestRenderSystem.h"
-#include "TestInputSystem.h"
-#include "TransformComponent.h"
-#include "InputComponent.h"
-#include "GravityComponent.h"
-#include "TestMovementSystem.h"
-#include "TestAnimationSystem.h"
+#include "Systems\TestRenderSystem.h"
+#include "Systems\TestInputSystem.h"
+#include "Components\TransformComponent.h"
+#include "Components\InputComponent.h"
+#include "Components\GravityComponent.h"
+#include "Systems\TestMovementSystem.h"
+#include "Systems\TestAnimationSystem.h"
 
 TestScene::TestScene() : Scene()
 {
@@ -18,5 +18,5 @@ TestScene::TestScene() : Scene()
 	m_player->addComponent<CTransform>(glm::vec2(0,0));
 	m_player->addComponent<CAnimation>(*(GameEngine::instance()->assetManager()->getAnimation("kai_standing")), false);
 	m_player->addComponent<CInput>();
-	m_player->addComponent<CGravity>(1.f);
+	m_player->addComponent<CGravity>(0.f);
 }

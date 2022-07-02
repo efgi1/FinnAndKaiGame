@@ -2,10 +2,10 @@
 
 #include <tuple>
 #include <string>
-#include "TransformComponent.h"
-#include "AnimationComponent.h"
-#include "InputComponent.h"
-#include "GravityComponent.h"
+#include "..\Components\TransformComponent.h"
+#include "..\Components\AnimationComponent.h"
+#include "..\Components\InputComponent.h"
+#include "..\Components\GravityComponent.h"
 
 class EntityManager;
 
@@ -29,7 +29,7 @@ public:
   template <typename T>
   bool hasComponent() const
   {
-    return get<T>().has;
+    return std::get<T>().has;
   }
 
   template <typename T, typename... TArgs>

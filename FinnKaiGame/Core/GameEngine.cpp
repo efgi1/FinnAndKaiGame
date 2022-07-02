@@ -1,5 +1,5 @@
-#include "GameEngine.h"
-#include "TestScene.h"
+#include "..\Core\GameEngine.h"
+#include "..\TestScene.h"
 
 
 void GameEngine::init()
@@ -8,7 +8,7 @@ void GameEngine::init()
 	{
 		throw "SDL could not be initialized. Error: %s\n", SDL_GetError();
 	}
-
+	IMG_Init(IMG_INIT_PNG);
 	m_window = SDL_CreateWindow("Test", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, WINDOW_WIDTH, WINDOW_HEIGHT, SDL_WINDOW_SHOWN);
 	m_renderer = SDL_CreateRenderer(m_window, -1, SDL_RENDERER_ACCELERATED);
 	m_entityManager = std::make_unique<EntityManager>();
@@ -43,6 +43,7 @@ void GameEngine::quit()
 	SDL_DestroyRenderer(m_renderer);
 
 	//Quit SDL subsystems
+	IMG_Quit();
 	SDL_Quit();
 }
 

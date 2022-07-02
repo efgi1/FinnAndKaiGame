@@ -1,8 +1,8 @@
-#include "Core/AssetManager.h"
+#include "..\Core\AssetManager.h"
 #include <fstream>
 #include <iostream>
-#include "GameEngine.h"
-#include "Texture.h"
+#include "..\Core\GameEngine.h"
+#include "..\Common\Texture.h"
 
 AssetManager::~AssetManager()
 {

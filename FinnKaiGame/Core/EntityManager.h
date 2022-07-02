@@ -4,7 +4,7 @@
 #include <vector>
 #include <string>
 
-#include "Entity.h"
+#include "..\Common\Entity.h"
 
 
 typedef std::vector<std::shared_ptr<Entity>> EntityVec;

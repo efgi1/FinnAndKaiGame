@@ -3,7 +3,7 @@
 #include <algorithm>
 #include <vector>
 #include <memory>
-#include "ISystem.h"
+#include "..\Common\ISystem.h"
 #include "Entity.h"
 
 class ISystem;
