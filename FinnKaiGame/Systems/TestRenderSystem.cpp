@@ -1,12 +1,47 @@
 #include "TestRenderSystem.h"
+#include "..\imgui\imgui.h"
+#include "..\imgui\imgui_impl_sdl.h"
+#include "..\imgui\imgui_impl_sdlrenderer.h"
 
 void TestRenderSystem::operator()()
 {
 	auto window = GameEngine::instance()->window();
 	auto surface = SDL_GetWindowSurface(window);
-	auto renderer = SDL_GetRenderer(window);
+	auto renderer = GameEngine::instance()->renderer();
+	if (window == nullptr || renderer == nullptr)
+		return;
 
 	SDL_RenderClear(renderer);
+
+	ImGui_ImplSDLRenderer_NewFrame();
+	ImGui_ImplSDL2_NewFrame();
+	ImGui::NewFrame();
+	bool yes = true;
+	ImGui::ShowDemoWindow(&yes);
+
+	if (ImGui::BeginMainMenuBar())
+	{
+		if (ImGui::BeginMenu("File"))
+		{
+			//ImGui::MenuItem("(demo menu)", NULL, false, false);
+			if (ImGui::MenuItem("New")) {}
+			if (ImGui::MenuItem("Open", "Ctrl+O")) {}
+			if (ImGui::MenuItem("Save", "Ctrl+S")) {}
+			if (ImGui::MenuItem("Save As..")) {}
+			ImGui::EndMenu();
+		}
+		if (ImGui::BeginMenu("Edit"))
+		{
+			if (ImGui::MenuItem("Undo", "CTRL+Z")) {}
+			if (ImGui::MenuItem("Redo", "CTRL+Y", false, false)) {}  // Disabled item
+			ImGui::Separator();
+			if (ImGui::MenuItem("Cut", "CTRL+X")) {}
+			if (ImGui::MenuItem("Copy", "CTRL+C")) {}
+			if (ImGui::MenuItem("Paste", "CTRL+V")) {}
+			ImGui::EndMenu();
+		}
+		ImGui::EndMainMenuBar();
+	}
 
 	auto entities = GameEngine::instance()->entityManager()->getEntities();
 
@@ -30,6 +65,9 @@ void TestRenderSystem::operator()()
 			entity->getComponent<CAnimation>().animation.update();
 		}
 	}
+
+	ImGui::Render();
+	ImGui_ImplSDLRenderer_RenderDrawData(ImGui::GetDrawData());
 	SDL_RenderPresent(renderer);
 	
 }

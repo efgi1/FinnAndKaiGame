@@ -1,6 +1,7 @@
 #include "TestInputSystem.h"
 #include "..\Core\GameEngine.h"
 #include "..\Components\AnimationComponent.h"
+#include "..\imgui\imgui_impl_sdl.h"
 
 void TestInputSystem::operator()()
 {
@@ -8,6 +9,7 @@ void TestInputSystem::operator()()
     SDL_Event event;
     while (SDL_PollEvent(&event) > 0)
     {
+        ImGui_ImplSDL2_ProcessEvent(&event);
         switch (event.type)
         {
         case SDL_QUIT:
