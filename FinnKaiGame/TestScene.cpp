@@ -16,7 +16,7 @@ TestScene::TestScene() : Scene()
 
 	m_player = GameEngine::instance()->entityManager()->addEntity("player");
 	m_player->addComponent<CTransform>(glm::vec2(0,0));
-	m_player->addComponent<CAnimation>(*(GameEngine::instance()->assetManager()->getAnimation("kai_standing")), false);
+	m_player->addComponent<CAnimation>("kai", * (GameEngine::instance()->assetManager()->getAnimation("kai_standing")), false);
 	m_player->addComponent<CInput>();
 	m_player->addComponent<CGravity>(0.f);
 }

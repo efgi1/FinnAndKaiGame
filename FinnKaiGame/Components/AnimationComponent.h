@@ -7,9 +7,10 @@ class CAnimation :
 public:
   Animation animation;
   bool repeat = false;
+  std::string textureName;
   CAnimation() {}
-  CAnimation(const Animation& animation, bool r)
-    : animation(animation), repeat(r) {
+  CAnimation(std::string textureName, const Animation& animation, bool r)
+    : textureName(textureName), animation(animation), repeat(r) {
   }
 };
 

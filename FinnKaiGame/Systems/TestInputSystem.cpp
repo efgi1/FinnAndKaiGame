@@ -24,13 +24,13 @@ void TestInputSystem::operator()()
                 case SDLK_LEFT: 
                     if (player->getComponent<CAnimation>().animation.getName() == "kai_standing")
                     {
-                        player->addComponent<CAnimation>(*GameEngine::instance()->assetManager()->getAnimation("kai_running"), false);
+                        player->getComponent<CAnimation>().animation = *GameEngine::instance()->assetManager()->getAnimation("kai_running");
                         player->getComponent<CAnimation>().animation.setFlip(SDL_FLIP_HORIZONTAL);
                     }
                     player->getComponent<CTransform>().velocity.x = -MAX_PLAYER_HORIZ_SPEED; break;
                 case SDLK_RIGHT: 
                     if (player->getComponent<CAnimation>().animation.getName() == "kai_standing")
-                        player->addComponent<CAnimation>(*GameEngine::instance()->assetManager()->getAnimation("kai_running"), false); 
+                        player->getComponent<CAnimation>().animation = *GameEngine::instance()->assetManager()->getAnimation("kai_running");
                     player->getComponent<CTransform>().velocity.x = MAX_PLAYER_HORIZ_SPEED;
                     break;
                 case SDLK_SPACE:
@@ -42,12 +42,12 @@ void TestInputSystem::operator()()
             switch (event.key.keysym.sym)
             {
                 case SDLK_RIGHT:
-                    player->addComponent<CAnimation>(*GameEngine::instance()->assetManager()->getAnimation("kai_standing"), false);
+                    player->getComponent<CAnimation>().animation = *GameEngine::instance()->assetManager()->getAnimation("kai_standing");
                     player->getComponent<CTransform>().velocity.x = 0;
                     break;
                 case SDLK_LEFT:
                 {
-                    player->addComponent<CAnimation>(*GameEngine::instance()->assetManager()->getAnimation("kai_standing"), false);
+                    player->getComponent<CAnimation>().animation = *GameEngine::instance()->assetManager()->getAnimation("kai_standing");
                     player->getComponent<CAnimation>().animation.setFlip(SDL_FLIP_HORIZONTAL);
                     player->getComponent<CTransform>().velocity.x = 0;
                     break;
