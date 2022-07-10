@@ -2,6 +2,7 @@
 #include "Core\GameEngine.h"
 
 #include <iostream>
+#include <filesystem>
 
 std::unique_ptr<GameEngine> GameEngine::_instance = nullptr;
 
