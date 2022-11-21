@@ -20,7 +20,7 @@ set_target_properties ( ${PROJECT_NAME}
 	VS_DEBUGGER_WORKING_DIRECTORY "${CMAKE_BINARY_DIR}/x64/Debug/bin"
 )
 
-file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/FinnKaiGame/config.txt
+file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/FinnKaiGame/config.xml
 	DESTINATION ${CMAKE_BINARY_DIR}/x64/Debug/bin/)
 
 file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/FinnKaiGame/Assets

@@ -7,7 +7,7 @@ void TestSystem::operator()()
 		for (auto& entity : entities)
 		{
 			std::cout << "Enity Id: " << entity->id() << '\n';
-			std::cout << "Enity Id: " << entity->getComponent<CTransform>().pos.x << '\n';
+			std::cout << "Transform: {x: " << entity->getComponent<CTransform>().pos.x << ", y: " << entity->getComponent<CTransform>().pos.y << '\n';
 		}
 	}
 }

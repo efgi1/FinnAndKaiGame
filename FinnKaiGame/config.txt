@@ -1,3 +1,0 @@
-Texture kai Assets\kai.png
-Animation kai_running kai 4 0.003
-Animation kai_standing kai 4 0

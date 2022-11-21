@@ -1,4 +1,4 @@
-#include "..\Common\Scene.h"
+#include "Scene.h"
 
 void Scene::update()
 {

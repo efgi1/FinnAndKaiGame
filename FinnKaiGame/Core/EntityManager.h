@@ -3,6 +3,7 @@
 #include <map>
 #include <vector>
 #include <string>
+#include "entt/entt.hpp"
 
 #include "..\Common\Entity.h"
 
@@ -22,6 +23,7 @@ public:
 	EntityVec& getEntities(const std::string& tag);
 
 private:
+	entt::registry m_registry;
 	EntityVec m_entities;
 	EntityVec m_toAdd;
 	std::map<std::string, EntityVec> m_entityMap;

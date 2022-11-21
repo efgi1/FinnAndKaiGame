@@ -1,8 +1,8 @@
 #include "TestRenderSystem.h"
-#include "..\imgui\imgui.h"
-#include "..\imgui\imgui_impl_sdl.h"
-#include "..\imgui\imgui_impl_sdlrenderer.h"
-#include "..\imgui\imgui_internal.h"
+#include "imgui.h"
+#include "imgui_impl_sdl.h"
+#include "imgui_impl_sdlrenderer.h"
+#include "imgui_internal.h"
 
 void TestRenderSystem::operator()()
 {

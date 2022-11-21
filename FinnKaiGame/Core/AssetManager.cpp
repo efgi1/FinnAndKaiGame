@@ -1,8 +1,9 @@
-#include "..\Core\AssetManager.h"
+#include "AssetManager.h"
 #include <fstream>
 #include <iostream>
-#include "..\Core\GameEngine.h"
-#include "..\Common\Texture.h"
+#include "GameEngine.h"
+#include "Texture.h"
+#include <pugixml.hpp>
 
 AssetManager::~AssetManager()
 {
@@ -10,37 +11,64 @@ AssetManager::~AssetManager()
 
 void AssetManager::loadFromFile(const std::string& path)
 {
-  std::ifstream file(path);
-  std::string str;
-  while (file.good())
-  {
-    file >> str;
 
-    if (str == "Texture")
+    std::cout << "\nParsing config data (sample.xml).....\n\n";
+
+    pugi::xml_document doc;
+    // load the XML file
+    if (!doc.load_file(".\\config.xml")) return;
+
+    pugi::xml_node textures = doc.child("GameConfig").child("Textures");
+    pugi::xml_node animations = doc.child("GameConfig").child("Animations");
+
+
+    for (pugi::xml_node_iterator it = textures.begin(); it != textures.end(); ++it)
     {
-      std::string name, path;
-      file >> name >> path;
-      addTexture(name, path);
+        std::cout << "Textures:";
+
+        std::string name, path;
+        for (pugi::xml_attribute_iterator ait = it->attributes_begin();
+            ait != it->attributes_end(); ++ait)
+        {
+            std::string nameTag = ait->name();
+            std::string value = ait->value();
+            std::cout << " " << nameTag <<
+                "=" << value;
+            if (nameTag == "Name")
+                name = value;
+            if (nameTag == "FilePath")
+                path = value;
+        }
+        addTexture(name, path);
+        std::cout << std::endl;
     }
-    else if (str == "Animation")
+
+    for (pugi::xml_node_iterator it = animations.begin(); it != animations.end(); ++it)
     {
-      std::string name, texture;
-      size_t frames;
-      float speed;
-      file >> name >> texture >> frames >> speed;
-      addAnimation(name, texture, frames, speed);
+        std::cout << "Animations:";
+
+        std::string name, texture;
+        int frames = 0;
+        float speed = 0;
+        for (pugi::xml_attribute_iterator ait = it->attributes_begin();
+            ait != it->attributes_end(); ++ait)
+        {
+            std::string nameTag = ait->name();
+            std::string value = ait->value();
+            std::cout << " " << nameTag <<
+                "=" << value;
+            if (nameTag == "Name")
+                name = value;
+            if (nameTag == "Texture")
+                texture = value;
+            if (nameTag == "Frames")
+                frames = stoi(value);
+            if (nameTag == "Speed")
+                speed = stof(value);
+        }
+        addAnimation(name, texture, frames, speed);
+        std::cout << std::endl;
     }
-    /*else if (str == "Font")
-    {
-      std::string name, path;
-      file >> name >> path;
-      addFont(name, path);
-    }*/
-    else
-    {
-      std::cerr << "Unknown Asset Type: " << str << std::endl;
-    }
-  }
 }
 
 Texture* AssetManager::getTexture(const std::string& textureName) const

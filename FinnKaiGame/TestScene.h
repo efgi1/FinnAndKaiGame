@@ -8,5 +8,6 @@ class TestScene :
 public:
   TestScene();
 
+  const float kGravity = 0.0005;
 };
 

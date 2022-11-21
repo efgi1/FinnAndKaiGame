@@ -1,5 +1,5 @@
 #include "TestAnimationSystem.h"
-#include "..\Core\GameEngine.h"
+#include "GameEngine.h"
 
 void TestAnimationSystem::operator()()
 {

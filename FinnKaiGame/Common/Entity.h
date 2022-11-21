@@ -2,10 +2,10 @@
 
 #include <tuple>
 #include <string>
-#include "..\Components\TransformComponent.h"
-#include "..\Components\AnimationComponent.h"
-#include "..\Components\InputComponent.h"
-#include "..\Components\GravityComponent.h"
+#include "TransformComponent.h"
+#include "AnimationComponent.h"
+#include "InputComponent.h"
+#include "GravityComponent.h"
 
 class EntityManager;
 

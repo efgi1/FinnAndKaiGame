@@ -1,4 +1,4 @@
-#include "..\Core\EntityManager.h"
+#include "EntityManager.h"
 
 void EntityManager::update()
 {

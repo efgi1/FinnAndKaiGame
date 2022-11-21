@@ -1,8 +1,8 @@
-#include "..\Core\GameEngine.h"
-#include "..\TestScene.h"
-#include "..\imgui\imgui.h"
-#include "..\imgui\imgui_impl_sdl.h"
-#include "..\imgui\imgui_impl_sdlrenderer.h"
+#include "GameEngine.h"
+#include "TestScene.h"
+#include "imgui.h"
+#include "imgui_impl_sdl.h"
+#include "imgui_impl_sdlrenderer.h"
 
 
 
