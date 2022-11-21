@@ -1,5 +1,5 @@
 #pragma once
-#include "..\Common\ISystem.h"
+#include "ISystem.h"
 class TestAnimationSystem :
     public ISystem
 {

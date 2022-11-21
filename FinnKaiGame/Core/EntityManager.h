@@ -5,7 +5,7 @@
 #include <string>
 #include "entt/entt.hpp"
 
-#include "..\Common\Entity.h"
+#include "Entity.h"
 
 
 typedef std::vector<std::shared_ptr<Entity>> EntityVec;

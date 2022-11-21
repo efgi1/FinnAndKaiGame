@@ -1,7 +1,7 @@
 #pragma once
-#include "..\Core\EntityManager.h"
+#include "EntityManager.h"
 #include <functional>
-#include "..\Common\Scene.h"
+#include "Scene.h"
 
 class Scene;
 

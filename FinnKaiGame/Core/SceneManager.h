@@ -1,5 +1,5 @@
 #pragma once
-#include "..\Common\Scene.h"
+#include "Scene.h"
 #include <memory>
 
 class SceneManager

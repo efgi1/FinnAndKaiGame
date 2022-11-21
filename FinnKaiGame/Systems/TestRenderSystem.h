@@ -1,6 +1,6 @@
 #pragma once
-#include "..\Common\ISystem.h"
-#include "..\Core\GameEngine.h"
+#include "ISystem.h"
+#include "GameEngine.h"
 
 class TestRenderSystem :
     public ISystem

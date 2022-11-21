@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+
+<GameConfig FormatVersion="1">
+
+    <Textures>
+        <Texture Name="kai" FilePath="Assets\kai.png"/>
+    </Textures>
+
+    <Animations>
+        <Animation Name="kai_running" Texture="kai" Frames="4" Speed="0.003"/>
+        <Animation Name="kai_standing" Texture="kai" Frames="4" Speed="0"/>
+    </Animations>
+
+</GameConfig>

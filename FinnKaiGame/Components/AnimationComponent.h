@@ -1,6 +1,6 @@
 #pragma once
 #include "IComponent.h"
-#include "..\Common\Animation.h"
+#include "Animation.h"
 class CAnimation :
     public IComponent
 {

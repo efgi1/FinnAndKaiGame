@@ -1,6 +1,6 @@
 #pragma once
-#include "..\Common\ISystem.h"
-#include "..\Core\GameEngine.h"
+#include "ISystem.h"
+#include "GameEngine.h"
 
 class TestMovementSystem :
   public ISystem
@@ -14,7 +14,7 @@ public:
       auto& transform = entity->getComponent<CTransform>();
       transform.prevPos = transform.pos;
       transform.pos += transform.velocity;
-      auto& gravity = entity->getComponent<CGravity>();
+      //auto& gravity = entity->getComponent<CGravity>();
 
       if (transform.pos.y > GameEngine::instance()->WINDOW_HEIGHT || transform.pos.y < 0)
       {
@@ -28,7 +28,7 @@ public:
         transform.pos.x = static_cast<float>(GameEngine::instance()->WINDOW_WIDTH);
       }
 
-      //transform.velocity.y += gravity.gravity;
+      //TODO physics system: transform.velocity.y += gravity.gravity;
     }
   }
 };
