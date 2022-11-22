@@ -6,6 +6,7 @@
 #include "AnimationComponent.h"
 #include "InputComponent.h"
 #include "GravityComponent.h"
+#include "entt/entt.hpp"
 
 class EntityManager;
 
@@ -35,6 +36,7 @@ public:
   template <typename T, typename... TArgs>
   void addComponent(TArgs&&... mArgs)
   {
+	GameEngine::instance()->entityManager()->emplace<T>(*this, std::forward<TArgs>(mArgs)...);
     auto& component = getComponent<T>();
     component = T(std::forward<TArgs>(mArgs)...);
     component.implemented = true;

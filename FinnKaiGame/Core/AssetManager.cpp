@@ -81,6 +81,14 @@ Animation* AssetManager::getAnimation(const std::string& animationName) const
   return  m_animationMap.at(animationName).get();
 }
 
+void AssetManager::shutdown()
+{
+    for (auto texture : m_textureMap)
+    {
+        SDL_DestroyTexture(texture.second->getSDLTexture());
+    }
+}
+
 void AssetManager::addTexture(const std::string& textureName, const std::string& path, bool smooth)
 {
   std::shared_ptr<Texture> texture = std::make_shared<Texture>("kai");

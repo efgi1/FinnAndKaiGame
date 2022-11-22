@@ -11,7 +11,7 @@
 class GameEngine
 {
 public:
-  ~GameEngine() { if (m_running) quit(); }
+    ~GameEngine() { if (m_running) quit();  shutdown(); }
 
   const int WINDOW_WIDTH = 1960;
   const int WINDOW_HEIGHT = 1080;
@@ -23,6 +23,7 @@ public:
 
   void run();
   void quit();
+  void shutdown();
 
 
   //TODO renderingManager?

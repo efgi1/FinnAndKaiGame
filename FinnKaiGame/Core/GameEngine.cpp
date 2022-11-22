@@ -3,6 +3,7 @@
 #include "imgui.h"
 #include "imgui_impl_sdl.h"
 #include "imgui_impl_sdlrenderer.h"
+#include "imgui_internal.h"
 
 
 
@@ -52,27 +53,75 @@ void GameEngine::run()
 	while (m_running)
 	{
 		update();
+
+
+		ImGui_ImplSDLRenderer_NewFrame();
+		ImGui_ImplSDL2_NewFrame();
+		ImGui::NewFrame();
+		bool yes = true;
+		ImGui::ShowDemoWindow(&yes);
+
+		if (ImGui::BeginMainMenuBar())
+		{
+			if (ImGui::BeginMenu("File"))
+			{
+				//ImGui::MenuItem("(demo menu)", NULL, false, false);
+				if (ImGui::MenuItem("New")) {}
+				if (ImGui::MenuItem("Open", "Ctrl+O")) {}
+				if (ImGui::MenuItem("Save", "Ctrl+S")) {}
+				if (ImGui::MenuItem("Save As..")) {}
+				if (ImGui::MenuItem("Exit"))
+				{
+					GameEngine::instance()->quit();
+					return;
+				}
+				ImGui::EndMenu();
+			}
+			if (ImGui::BeginMenu("Edit"))
+			{
+				if (ImGui::MenuItem("Undo", "CTRL+Z")) {}
+				if (ImGui::MenuItem("Redo", "CTRL+Y", false, false)) {}  // Disabled item
+				ImGui::Separator();
+				if (ImGui::MenuItem("Cut", "CTRL+X")) {}
+				if (ImGui::MenuItem("Copy", "CTRL+C")) {}
+				if (ImGui::MenuItem("Paste", "CTRL+V")) {}
+				ImGui::EndMenu();
+			}
+			auto buttonWidth = ImGui::CalcTextSize("X").x + ImGui::GetStyle().ItemInnerSpacing.x * 2;
+			auto frameWidth = ImGui::GetStyle().FramePadding.x;
+			if (ImGui::CloseButton(1, ImVec2(GameEngine::instance()->WINDOW_WIDTH - buttonWidth - frameWidth, 0)))
+			{
+				GameEngine::instance()->quit();
+				return;
+			};
+			ImGui::EndMainMenuBar();
+		}
+
+		ImGui::Render();
+		ImGui_ImplSDLRenderer_RenderDrawData(ImGui::GetDrawData());
+
+		SDL_RenderPresent(renderer());
 	}
 }
 
 void GameEngine::quit()
 {
 	m_running = false;
+}
 
+void GameEngine::shutdown()
+{
+	assetManager()->shutdown();
+	SDL_DestroyRenderer(m_renderer);
+	SDL_DestroyWindow(m_window);
+	
 	ImGui_ImplSDLRenderer_Shutdown();
 	ImGui_ImplSDL2_Shutdown();
 	ImGui::DestroyContext();
 
-
-	SDL_DestroyWindow(m_window);
-	SDL_DestroyRenderer(m_renderer);
-
-	m_window = nullptr;
-	m_renderer = nullptr;
-
 	//Quit SDL subsystems
-	IMG_Quit();
 	SDL_Quit();
+	IMG_Quit();
 }
 
 bool GameEngine::isRunning()

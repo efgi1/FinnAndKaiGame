@@ -8,25 +8,9 @@
 #include "Entity.h"
 
 
-typedef std::vector<std::shared_ptr<Entity>> EntityVec;
+typedef std::vector<entt::entity> EntityVec;
 
-class EntityManager
+class EntityManager : public entt::registry
 {
-public:
-	EntityManager() : nextId(0) {}
-
-	void update();
-
-	std::shared_ptr<Entity> addEntity(const std::string& tag);
-
-	EntityVec& getEntities();
-	EntityVec& getEntities(const std::string& tag);
-
-private:
-	entt::registry m_registry;
-	EntityVec m_entities;
-	EntityVec m_toAdd;
-	std::map<std::string, EntityVec> m_entityMap;
-	size_t nextId;
 };
 

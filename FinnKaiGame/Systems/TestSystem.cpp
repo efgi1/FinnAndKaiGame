@@ -3,11 +3,10 @@
 void TestSystem::operator()()
 {
 	{
-		auto& entities = GameEngine::instance()->entityManager()->getEntities();
-		for (auto& entity : entities)
+		auto view = GameEngine::instance()->entityManager()->view<CTransform>();
+		for (auto [entity, transform] : view.each())
 		{
-			std::cout << "Enity Id: " << entity->id() << '\n';
-			std::cout << "Transform: {x: " << entity->getComponent<CTransform>().pos.x << ", y: " << entity->getComponent<CTransform>().pos.y << '\n';
+			std::cout << "Transform: {x: " << transform.pos.x << ", y: " << transform.pos.y << '\n';
 		}
 	}
 }

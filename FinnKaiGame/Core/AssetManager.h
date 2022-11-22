@@ -20,6 +20,8 @@ public:
   Animation* getAnimation(const std::string& animationName) const;
   //const sf::Font& getFont(const std::string& fontName) const;
 
+  void shutdown();
+
 private:
   std::map<std::string, std::shared_ptr<Texture>>      m_textureMap;
   std::map<std::string, std::shared_ptr<Animation>>        m_animationMap;

@@ -8,10 +8,10 @@ class TestMovementSystem :
 public:
   TestMovementSystem(Scene* scene) : ISystem(scene) {}
   void operator()() override {
-    auto entities = GameEngine::instance()->entityManager()->getEntities();
-    for (auto& entity : entities)
+
+    auto view = GameEngine::instance()->entityManager()->view<CTransform>();
+    for (auto [entity, transform] : view.each())
     {
-      auto& transform = entity->getComponent<CTransform>();
       transform.prevPos = transform.pos;
       transform.pos += transform.velocity;
       //auto& gravity = entity->getComponent<CGravity>();

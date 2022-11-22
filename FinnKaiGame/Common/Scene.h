@@ -21,12 +21,12 @@ public:
 	  m_systems.push_back(std::make_unique<T>(this));
   }
 
-  std::shared_ptr<Entity> getPlayer() { return m_player; }
+  entt::entity getPlayer() { return m_player; }
 
 protected:
   std::vector<std::unique_ptr<ISystem>> m_systems;
   bool m_paused;
-  std::shared_ptr<Entity> m_player;
+  entt::entity m_player;
   
 };
 
