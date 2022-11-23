@@ -1,6 +1,7 @@
 #include "TestInputSystem.h"
 #include "GameEngine.h"
 #include "AnimationComponent.h"
+#include "TransformComponent.h"
 #include "imgui_impl_sdl.h"
 
 void TestInputSystem::operator()()

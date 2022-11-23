@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.24.0)
 
-project(FinnAndKaiGame VERSION 0.0)
+project(FinnKaiGame VERSION 0.0)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
@@ -9,11 +9,19 @@ include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
 conan_basic_setup()
 
 
-add_subdirectory(FinnKaiGame)
+add_subdirectory(${PROJECT_NAME})
 
-target_link_libraries(FinnAndKaiGame ${CONAN_LIBS})
+target_link_libraries(${PROJECT_NAME}Client ${CONAN_LIBS})
+target_link_libraries(${PROJECT_NAME}Server ${CONAN_LIBS})
 
-set_target_properties ( ${PROJECT_NAME}
+set_target_properties ( ${PROJECT_NAME}Client
+	PROPERTIES
+	RUNTIME_OUTPUT_DIRECTORY_DEBUG "${CMAKE_BINARY_DIR}/x64/Debug/bin"
+	RUNTIME_OUTPUT_DIRECTORY_RELEASE "${CMAKE_BINARY_DIR}/x64/Release/bin"
+	VS_DEBUGGER_WORKING_DIRECTORY "${CMAKE_BINARY_DIR}/x64/Debug/bin"
+)
+
+set_target_properties ( ${PROJECT_NAME}Server
 	PROPERTIES
 	RUNTIME_OUTPUT_DIRECTORY_DEBUG "${CMAKE_BINARY_DIR}/x64/Debug/bin"
 	RUNTIME_OUTPUT_DIRECTORY_RELEASE "${CMAKE_BINARY_DIR}/x64/Release/bin"
@@ -25,3 +33,5 @@ file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/FinnKaiGame/config.xml
 
 file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/FinnKaiGame/Assets
 	DESTINATION ${CMAKE_BINARY_DIR}/x64/Debug/bin/)
+
+set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT ${PROJECT_NAME}Client)

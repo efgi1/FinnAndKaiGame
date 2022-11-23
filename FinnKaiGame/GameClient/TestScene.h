@@ -1,6 +1,6 @@
 #pragma once
-#include "Common\Scene.h"
-#include "Systems\TestSystem.h"
+#include "Scene.h"
+#include "TestSystem.h"
 
 class TestScene :
     public Scene

@@ -4,7 +4,6 @@
 #include <vector>
 #include <memory>
 #include "ISystem.h"
-#include "Entity.h"
 
 class ISystem;
 

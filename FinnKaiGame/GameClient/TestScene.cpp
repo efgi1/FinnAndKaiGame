@@ -6,6 +6,7 @@
 #include "GravityComponent.h"
 #include "TestMovementSystem.h"
 #include "TestAnimationSystem.h"
+#include "AnimationComponent.h"
 
 TestScene::TestScene() : Scene()
 {

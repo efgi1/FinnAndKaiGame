@@ -1,4 +1,5 @@
 #include "TestSystem.h"
+#include "TransformComponent.h"
 
 void TestSystem::operator()()
 {

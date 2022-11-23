@@ -1,4 +1,6 @@
 #include "TestRenderSystem.h"
+#include "TransformComponent.h"
+#include "AnimationComponent.h"
 
 void TestRenderSystem::operator()()
 {
