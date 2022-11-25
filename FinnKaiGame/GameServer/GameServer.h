@@ -7,6 +7,7 @@
 #include <steam/steamnetworkingsockets.h>
 
 #include "EntityManager.h"
+#include "entt/entt.hpp"
 
 class GameServer
 {
@@ -34,7 +35,7 @@ private:
   HSteamListenSocket m_hListenSock;
   HSteamNetPollGroup m_hPollGroup;
   ISteamNetworkingSockets* m_pInterface;
-  std::map< HSteamNetConnection, std::string > m_mapClients;
+  std::map< HSteamNetConnection, std::string> m_mapClients;
   std::thread* s_pThreadUserInput = nullptr;
   std::queue< std::string > queueUserInput;
   std::mutex mutexUserInputQueue;
@@ -48,6 +49,8 @@ private:
   void update();
   void InitSteamDatagramConnectionSockets();
   void OnSteamNetConnectionStatusChanged(SteamNetConnectionStatusChangedCallback_t* pInfo);
+
+  void initNewConnection(SteamNetConnectionStatusChangedCallback_t* pInfo, char  temp[1024]);
 
   void PollConnectionStateChanges();
 

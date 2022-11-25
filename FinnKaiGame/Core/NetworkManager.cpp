@@ -1,18 +1,14 @@
 #include "NetworkManager.h"
 #include "Utils.h"
+#include <SDL2/SDL_events.h>
+#include "EntityManager.h"
 
 void NetworkManager::update(bool running)
 {
 	m_running = running;
-	init();
-
-	while (m_running)
-	{
-		PollIncomingMessages();
-		PollConnectionStateChanges();
-		PollLocalUserInput();
-		std::this_thread::sleep_for(std::chrono::milliseconds(10));
-	}
+	PollIncomingMessages();
+	PollConnectionStateChanges();
+	PollLocalUserInput();
 }
 
 void NetworkManager::init()
@@ -56,43 +52,60 @@ void NetworkManager::InitSteamDatagramConnectionSockets()
 
 void NetworkManager::LocalUserInput_Init()
 {
-	s_pThreadUserInput = std::make_unique<std::thread>([this]()
-		{
-			while (m_running)
-			{
-				char szLine[4000];
-				if (!fgets(szLine, sizeof(szLine), stdin))
-				{
-					// Well, you would hope that you could close the handle
-					// from the other thread to trigger this.  Nope.
-					if (!m_running)
-						return;
-					m_running = false;
-					Utils::Printf("Failed to read on stdin, quitting\n");
-					break;
-				}
+	//fd_set rfds, save_rfds;
+	//struct timeval tv;
+	//tv.tv_sec = 0;
+	//tv.tv_usec = 0;
+	//FD_ZERO(&rfds);
+	//FD_SET(0, &rfds);
+	//save_rfds = rfds;
+	//int retval;
 
-				mutexUserInputQueue.lock();
-				queueUserInput.push(std::string(szLine));
-				mutexUserInputQueue.unlock();
-			}
-		});
+	//while (m_running)
+	//{
+	//	retval = select(1, &rfds, NULL, NULL, &tv);
+	//	rfds = save_rfds;
+
+	//	if (retval)
+	//	{
+	//		char szLine[4000];
+	//		if (!fgets(szLine, sizeof(szLine), stdin))
+	//		{
+	//			// Well, you would hope that you could close the handle
+	//			// from the other thread to trigger this.  Nope.
+	//			if (!m_running)
+	//				return;
+	//			m_running;
+	//			Utils::Printf("Failed to read on stdin, quitting\n");
+	//			break;
+	//		}
+
+	//		
+	//	}
+	//}
 }
 
 void NetworkManager::PollIncomingMessages()
 {
-	while (m_running)
+	ISteamNetworkingMessage* pIncomingMsg = nullptr;
+	
+	int numMsgs = m_pInterface->ReceiveMessagesOnConnection(m_hConnection, &pIncomingMsg, 1);
+	if (pIncomingMsg != nullptr)
 	{
-		ISteamNetworkingMessage* pIncomingMsg = nullptr;
-		int numMsgs = m_pInterface->ReceiveMessagesOnConnection(m_hConnection, &pIncomingMsg, 1);
-		if (numMsgs == 0)
-			break;
 		if (numMsgs < 0)
 			Utils::FatalError("Error checking for messages");
 
 		// Just echo anything we get from the server
-		fwrite(pIncomingMsg->m_pData, 1, pIncomingMsg->m_cbSize, stdout);
-		fputc('\n', stdout);
+		auto test = static_cast<message*>(pIncomingMsg->m_pData);
+		if (test->type == 1)
+		{
+			m_messageQ.push(*test);
+		}
+		else
+		{
+			fwrite(pIncomingMsg->m_pData, 1, pIncomingMsg->m_cbSize, stdout);
+			fputc('\n', stdout);
+		}
 
 		// We don't need this anymore.
 		pIncomingMsg->Release();
@@ -103,13 +116,13 @@ void NetworkManager::PollLocalUserInput()
 {
 	std::string cmd;
 	bool test = true;
-	while (m_running && LocalUserInput_GetNext(cmd))
+	while (LocalUserInput_GetNext(cmd))
 	{
 
 		// Check for known commands
 		if (strcmp(cmd.c_str(), "/quit") == 0)
 		{
-			m_running = false;
+			//m_running = false;
 			Utils::Printf("Disconnecting from chat server");
 
 			// Close the connection gracefully.
@@ -145,7 +158,7 @@ inline void NetworkManager::OnSteamNetConnectionStatusChanged(SteamNetConnection
 	case k_ESteamNetworkingConnectionState_ClosedByPeer:
 	case k_ESteamNetworkingConnectionState_ProblemDetectedLocally:
 	{
-		m_running = false;
+		//m_running = false;
 
 		// Print an appropriate message
 		if (pInfo->m_eOldState == k_ESteamNetworkingConnectionState_Connecting)

@@ -2,6 +2,8 @@
 
 #include "GameServer.h"
 #include "Utils.h"
+#include "TransformComponent.h"
+#include "InputComponent.h"
 
 void GameServer::run()
 {
@@ -79,6 +81,8 @@ void GameServer::init()
 	if (m_hPollGroup == k_HSteamNetPollGroup_Invalid)
 		Utils::FatalError("Failed to listen on port %d", DEFAULT_SERVER_PORT);
 	Utils::Printf("Server listening on port %d\n", DEFAULT_SERVER_PORT);
+
+	m_entityManager = std::make_unique<EntityManager>();
 }
 
 void GameServer::update()
@@ -99,8 +103,7 @@ inline void GameServer::InitSteamDatagramConnectionSockets()
 
 	SteamNetworkingUtils()->SetDebugOutputFunction(k_ESteamNetworkingSocketsDebugOutputType_Msg, Utils::DebugOutput);
 }
-
-inline void GameServer::OnSteamNetConnectionStatusChanged(SteamNetConnectionStatusChangedCallback_t* pInfo)
+ void GameServer::OnSteamNetConnectionStatusChanged(SteamNetConnectionStatusChangedCallback_t* pInfo)
 {
 	char temp[1024];
 
@@ -174,61 +177,7 @@ inline void GameServer::OnSteamNetConnectionStatusChanged(SteamNetConnectionStat
 	{
 		// This must be a new connection
 		assert(m_mapClients.find(pInfo->m_hConn) == m_mapClients.end());
-
-		Utils::Printf("Connection request from %s", pInfo->m_info.m_szConnectionDescription);
-
-		// A client is attempting to connect
-		// Try to accept the connection.
-		if (m_pInterface->AcceptConnection(pInfo->m_hConn) != k_EResultOK)
-		{
-			// This could fail.  If the remote host tried to connect, but then
-			// disconnected, the connection may already be half closed.  Just
-			// destroy whatever we have on our side.
-			m_pInterface->CloseConnection(pInfo->m_hConn, 0, nullptr, false);
-			Utils::Printf("Can't accept connection.  (It was already closed?)");
-			break;
-		}
-
-		// Assign the poll group
-		if (!m_pInterface->SetConnectionPollGroup(pInfo->m_hConn, m_hPollGroup))
-		{
-			m_pInterface->CloseConnection(pInfo->m_hConn, 0, nullptr, false);
-			Utils::Printf("Failed to set poll group?");
-			break;
-		}
-
-		// Generate a random nick.  A random temporary nick
-		// is really dumb and not how you would write a real chat server.
-		// You would want them to have some sort of signon message,
-		// and you would keep their client in a state of limbo (connected,
-		// but not logged on) until them.  I'm trying to keep this example
-		// code really simple.
-		char nick[64];
-		sprintf(nick, "BraveWarrior%d", 10000 + (rand() % 100000));
-
-		// Send them a welcome message
-		sprintf(temp, "Welcome, stranger.  Thou art known to us for now as '%s'; upon thine command '/nick' we shall know thee otherwise.", nick);
-		SendStringToClient(pInfo->m_hConn, temp);
-
-		// Also send them a list of everybody who is already connected
-		if (m_mapClients.empty())
-		{
-			SendStringToClient(pInfo->m_hConn, "Thou art utterly alone.");
-		}
-		else
-		{
-			sprintf(temp, "%d companions greet you:", (int)m_mapClients.size());
-			for (auto& c : m_mapClients)
-				SendStringToClient(pInfo->m_hConn, c.second.c_str());
-		}
-
-		// Let everybody else know who they are for now
-		sprintf(temp, "Hark!  A stranger hath joined this merry host.  For now we shall call them '%s'", nick);
-		SendStringToAllClients(temp, pInfo->m_hConn);
-
-		// Add them to the client list, using std::map wacky syntax
-		m_mapClients[pInfo->m_hConn];
-		SetClientNick(pInfo->m_hConn, nick);
+		initNewConnection(pInfo, temp);
 		break;
 	}
 
@@ -241,6 +190,98 @@ inline void GameServer::OnSteamNetConnectionStatusChanged(SteamNetConnectionStat
 		// Silences -Wswitch
 		break;
 	}
+}
+
+void GameServer::initNewConnection(SteamNetConnectionStatusChangedCallback_t* pInfo, char  temp[1024])
+{
+	Utils::Printf("Connection request from %s", pInfo->m_info.m_szConnectionDescription);
+
+	// A client is attempting to connect
+	// Try to accept the connection.
+	if (m_pInterface->AcceptConnection(pInfo->m_hConn) != k_EResultOK)
+	{
+		// This could fail.  If the remote host tried to connect, but then
+		// disconnected, the connection may already be half closed.  Just
+		// destroy whatever we have on our side.
+		m_pInterface->CloseConnection(pInfo->m_hConn, 0, nullptr, false);
+		Utils::Printf("Can't accept connection.  (It was already closed?)");
+		return;
+	}
+
+	// Assign the poll group
+	if (!m_pInterface->SetConnectionPollGroup(pInfo->m_hConn, m_hPollGroup))
+	{
+		m_pInterface->CloseConnection(pInfo->m_hConn, 0, nullptr, false);
+		Utils::Printf("Failed to set poll group?");
+		return;
+	}
+
+	// Generate a random nick.  A random temporary nick
+	// is really dumb and not how you would write a real chat server.
+	// You would want them to have some sort of signon message,
+	// and you would keep their client in a state of limbo (connected,
+	// but not logged on) until them.  I'm trying to keep this example
+	// code really simple.
+	char nick[64];
+	sprintf(nick, "BraveWarrior%d", 10000 + (rand() % 100000));
+	message m;
+	sprintf(m.name, "BraveWarrior%d", 10000 + (rand() % 100000));
+	m.x = 100.f;
+	m.y = 100.f;
+
+	auto newPlayer = m_entityManager->create();
+	m_entityManager->emplace<std::string>(newPlayer, m.name);
+	m_entityManager->emplace<CTransform>(newPlayer, glm::vec2(m.x, m.y));
+	m_entityManager->emplace<CInput>(newPlayer);
+
+
+	// Send them a welcome message
+	sprintf(temp, "Welcome, stranger.  Thou art known to us for now as '%s'; upon thine command '/nick' we shall know thee otherwise.", nick);
+	SendStringToClient(pInfo->m_hConn, temp);
+	// Send client's entity to client
+	m_pInterface->SendMessageToConnection(pInfo->m_hConn, &m, m.getSize(), k_nSteamNetworkingSend_Reliable, nullptr);
+
+	// Also send them a list of everybody who is already connected
+	if (m_mapClients.empty())
+	{
+		SendStringToClient(pInfo->m_hConn, "Thou art utterly alone.");
+	}
+	else
+	{
+		sprintf(temp, "%d companions greet you:", (int)m_mapClients.size());
+		for (auto& c : m_mapClients)
+		{
+			SendStringToClient(pInfo->m_hConn, c.second.c_str());
+			// Send all currently connected entities to client
+			message m2;
+			sprintf(m2.name, "BraveWarrior%d", 10000 + (rand() % 100000));
+			m2.x = 100.f;
+			m2.y = 100.f;
+			m_pInterface->SendMessageToConnection(pInfo->m_hConn, &m2, m2.getSize(), k_nSteamNetworkingSend_Reliable, nullptr);
+		}
+	}
+
+	// Let everybody else know who they are for now
+	sprintf(temp, "Hark!  A stranger hath joined this merry host.  For now we shall call them '%s'", nick);
+	SendStringToAllClients(temp, pInfo->m_hConn);
+	for (auto& c : m_mapClients)
+	{
+		message m;
+		sprintf(m.name, "BraveWarrior%d", 10000 + (rand() % 100000));
+		m.x = 100.f;
+		m.y = 100.f;
+		if (c.first != pInfo->m_hConn)
+		{
+			// send client's entity to currently connected
+			m_pInterface->SendMessageToConnection(c.first, &m, m.getSize(), k_nSteamNetworkingSend_Reliable, nullptr);
+		}
+	}
+
+	// Add them to the client list, using std::map wacky syntax
+	m_mapClients[pInfo->m_hConn];
+	SetClientNick(pInfo->m_hConn, nick);
+
+	return;
 }
 
 inline void GameServer::LocalUserInput_Init()

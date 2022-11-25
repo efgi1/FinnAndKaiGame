@@ -2,17 +2,18 @@
 #include "GameEngine.h"
 #include "AnimationComponent.h"
 #include "TransformComponent.h"
+#include "InputComponent.h"
 #include "imgui_impl_sdl.h"
 
 void TestInputSystem::operator()()
 {
     auto player = m_scene->getPlayer();
-    auto view = GameEngine::instance()->entityManager()->view<std::string, CTransform, CAnimation>();
+    auto view = GameEngine::instance()->entityManager()->view<std::string, CTransform, CAnimation, CInput>(); //TODO cInput, not std::string
     SDL_Event event;
 
     //int x, y;
    // SDL_GetMouseState(&x, &y);
-    for (auto [entity, tag, transform, animation] : view.each())
+    for (auto [entity, tag, transform, animation, input] : view.each())
     {
         /*auto size = GameEngine::instance()->assetManager()->getTexture(animation.textureName)->getSize();
         x -= size[0] / 8;

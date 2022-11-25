@@ -9,4 +9,4 @@ zlib/1.2.13
 
 
 [generators]
-cmake
+cmake_multi

@@ -93,13 +93,13 @@ void AssetManager::addTexture(const std::string& textureName, const std::string&
 {
   std::shared_ptr<Texture> texture = std::make_shared<Texture>("kai");
   texture->createTexture(path);
-  glm::vec2 size = texture->getSize();
+  glm::vec2 getSize = texture->getSize();
   m_textureMap[textureName] = texture;
 }
 
 void AssetManager::addAnimation(const std::string& animationName, const std::string& textureName, size_t frameCount, float speed)
 {
-    auto size = m_textureMap[textureName]->getSize();
-    std::shared_ptr<Animation> animation = std::make_unique<Animation>(animationName, size, frameCount, speed);
+    auto getSize = m_textureMap[textureName]->getSize();
+    std::shared_ptr<Animation> animation = std::make_unique<Animation>(animationName, getSize, frameCount, speed);
     m_animationMap[animationName] = animation;
 }

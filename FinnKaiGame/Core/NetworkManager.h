@@ -3,15 +3,20 @@
 #include <mutex>
 #include <queue>
 #include <steam/steamnetworkingsockets.h>
+#include <thread>
+#include <EntityManager.h>
 
 class NetworkManager
 {
 public:
+	~NetworkManager() {
+	}
+	void init();
 	void update(bool running);
+	std::queue<message> m_messageQ;
 
 private:
-
-	bool m_running = false;
+	bool m_running = true;
 	HSteamNetConnection m_hConnection;
 	ISteamNetworkingSockets* m_pInterface;
 	std::string ipAddress = "192.168.0.202";
@@ -19,8 +24,6 @@ private:
 	std::queue< std::string > queueUserInput;
 	std::mutex mutexUserInputQueue;
 	std::unique_ptr<std::thread> s_pThreadUserInput = nullptr;
-
-	void init();
 
 	void InitSteamDatagramConnectionSockets();
 	void LocalUserInput_Init();

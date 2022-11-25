@@ -4,6 +4,8 @@
 #include "imgui_impl_sdl.h"
 #include "imgui_impl_sdlrenderer.h"
 #include "imgui_internal.h"
+#include "AnimationComponent.h"
+#include "TransformComponent.h"
 
 
 
@@ -35,12 +37,14 @@ void GameEngine::init()
 	m_assetManager = std::make_unique<AssetManager>();
 	m_sceneManager = std::make_unique<SceneManager>();
 	m_networkManager = std::make_unique<NetworkManager>();
+	m_networkManager->init();
 	
 }
 
 void GameEngine::update()
 {
 	m_sceneManager->update();
+	m_networkManager->update(m_running);
 }
 
 
@@ -51,18 +55,19 @@ void GameEngine::run()
 	m_assetManager->loadFromFile(".\\config.txt");
 
 	m_sceneManager->setCurrentScene(std::make_unique<TestScene>());
-	m_networkUpdatesThread = std::make_unique<std::thread>([this]()
-		{
-			while (m_running)
-			{
-				m_networkManager->update(m_running);
-			}
-		});
+
 	while (m_running)
 	{
 		update();
-
-
+		while (!m_networkManager->m_messageQ.empty())
+		{
+			auto test = m_networkManager->m_messageQ.front();
+			m_networkManager->m_messageQ.pop();
+			auto newEntity = m_entityManager->create();
+			m_entityManager->emplace<std::string>(newEntity, test.name);
+			m_entityManager->emplace<CTransform>(newEntity, glm::vec2(test.x, test.y));
+			m_entityManager->emplace<CAnimation>(newEntity, "kai", *(GameEngine::instance()->assetManager()->getAnimation("kai_standing")), false);
+		}
 		ImGui_ImplSDLRenderer_NewFrame();
 		ImGui_ImplSDL2_NewFrame();
 		ImGui::NewFrame();
