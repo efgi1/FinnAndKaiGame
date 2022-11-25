@@ -4,8 +4,6 @@
 #include "imgui_impl_sdl.h"
 #include "imgui_impl_sdlrenderer.h"
 #include "imgui_internal.h"
-#include "TransformComponent.h"
-#include "AnimationComponent.h"
 
 
 
@@ -43,14 +41,6 @@ void GameEngine::init()
 void GameEngine::update()
 {
 	m_sceneManager->update();
-	if (!m_networkManager->commandQueue.empty() && !testit)
-	{
-		auto em = GameEngine::instance()->entityManager();
-		auto tester = em->create();
-		em->emplace<CTransform>(tester, glm::vec2(0, 500));
-		em->emplace<CAnimation>(tester, "kai", *(GameEngine::instance()->assetManager()->getAnimation("kai_standing")), false);
-		testit = true;
-	}
 }
 
 
@@ -61,7 +51,7 @@ void GameEngine::run()
 	m_assetManager->loadFromFile(".\\config.txt");
 
 	m_sceneManager->setCurrentScene(std::make_unique<TestScene>());
-	test = std::make_unique<std::thread>([this]()
+	m_networkUpdatesThread = std::make_unique<std::thread>([this]()
 		{
 			while (m_running)
 			{

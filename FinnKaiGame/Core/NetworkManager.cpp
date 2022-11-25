@@ -91,16 +91,6 @@ void NetworkManager::PollIncomingMessages()
 			Utils::FatalError("Error checking for messages");
 
 		// Just echo anything we get from the server
-		auto test = static_cast<int*>(pIncomingMsg->m_pData);
-		if (*test == 1)
-		{
-			fwrite(pIncomingMsg->m_pData, 1, pIncomingMsg->m_cbSize, stdout);
-			fputc('\n', stdout);
-			fputc('Y', stdout);
-			mutexCommandQueue.lock();
-			commandQueue.push(*test);
-			mutexCommandQueue.unlock();
-		}
 		fwrite(pIncomingMsg->m_pData, 1, pIncomingMsg->m_cbSize, stdout);
 		fputc('\n', stdout);
 
