@@ -48,12 +48,13 @@ private:
   void update();
   void InitSteamDatagramConnectionSockets();
   void OnSteamNetConnectionStatusChanged(SteamNetConnectionStatusChangedCallback_t* pInfo);
-  void LocalUserInput_Init();
-  bool LocalUserInput_GetNext(std::string& result);
 
   void PollConnectionStateChanges();
 
   // TEST FUNCTIONS
+
+  void LocalUserInput_Init();
+  bool LocalUserInput_GetNext(std::string& result);
   void SendStringToClient(HSteamNetConnection conn, const char* str);
   void SendStringToAllClients(const char* str, HSteamNetConnection except = k_HSteamNetConnection_Invalid);
   void PollIncomingMessages();

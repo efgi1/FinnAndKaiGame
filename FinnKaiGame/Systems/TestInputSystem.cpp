@@ -10,11 +10,11 @@ void TestInputSystem::operator()()
     auto view = GameEngine::instance()->entityManager()->view<std::string, CTransform, CAnimation>();
     SDL_Event event;
 
-    int x, y;
-    SDL_GetMouseState(&x, &y);
+    //int x, y;
+   // SDL_GetMouseState(&x, &y);
     for (auto [entity, tag, transform, animation] : view.each())
     {
-        auto size = GameEngine::instance()->assetManager()->getTexture(animation.textureName)->getSize();
+        /*auto size = GameEngine::instance()->assetManager()->getTexture(animation.textureName)->getSize();
         x -= size[0] / 8;
         y -= size[1] / 2;
         if (transform.pos.x < x)
@@ -24,7 +24,7 @@ void TestInputSystem::operator()()
         if (transform.pos.y < y)
             transform.velocity.y = MAX_PLAYER_VERT_SPEED;
         else if (transform.pos.y > y)
-            transform.velocity.y = -MAX_PLAYER_VERT_SPEED;
+            transform.velocity.y = -MAX_PLAYER_VERT_SPEED;*/
         while (SDL_PollEvent(&event) > 0)
         {
             ImGui_ImplSDL2_ProcessEvent(&event);
