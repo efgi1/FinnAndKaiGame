@@ -19,7 +19,7 @@ private:
 	bool m_running = true;
 	HSteamNetConnection m_hConnection;
 	ISteamNetworkingSockets* m_pInterface;
-	std::string ipAddress = "192.168.0.202";
+	std::string ipAddress = "127.0.0.1";
 	SteamNetworkingIPAddr serverAddr;
 	std::queue< std::string > queueUserInput;
 	std::mutex mutexUserInputQueue;

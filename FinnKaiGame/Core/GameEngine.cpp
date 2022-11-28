@@ -6,6 +6,7 @@
 #include "imgui_internal.h"
 #include "AnimationComponent.h"
 #include "TransformComponent.h"
+#include "InputComponent.h"
 
 
 
@@ -67,6 +68,7 @@ void GameEngine::run()
 			m_entityManager->emplace<std::string>(newEntity, test.name);
 			m_entityManager->emplace<CTransform>(newEntity, glm::vec2(test.x, test.y));
 			m_entityManager->emplace<CAnimation>(newEntity, "kai", *(GameEngine::instance()->assetManager()->getAnimation("kai_standing")), false);
+			m_entityManager->emplace<CInput>(newEntity);
 		}
 		ImGui_ImplSDLRenderer_NewFrame();
 		ImGui_ImplSDL2_NewFrame();
