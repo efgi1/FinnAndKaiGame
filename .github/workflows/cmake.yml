@@ -33,6 +33,6 @@ jobs:
       uses: turtlebrowser/get-conan@main
       
     - name: Build
-      run: ./build.ps1 ${{env.BUILD_TYPE}}
+      run: ./build_automate.ps1 ${{env.BUILD_TYPE}}
       shell: pwsh
 
