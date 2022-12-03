@@ -9,17 +9,28 @@
 class NetworkManager
 {
 public:
-	~NetworkManager() {
+	~NetworkManager() { 
 	}
+
+	static NetworkManager* instance() {
+		if (_instance == nullptr)
+			_instance = std::unique_ptr<NetworkManager>(new NetworkManager);
+		return _instance.get();
+	}
+
 	void init();
-	void update(bool running);
+	void update();
 	std::queue<message> m_messageQ;
 
+	void SendPlayerUpdate(message& m);
+	void CloseConnection();
+
 private:
+	inline static std::unique_ptr<NetworkManager> _instance = nullptr;
 	bool m_running = true;
 	HSteamNetConnection m_hConnection;
 	ISteamNetworkingSockets* m_pInterface;
-	std::string ipAddress = "127.0.0.1";
+	std::string ipAddress = "192.168.0.80";
 	SteamNetworkingIPAddr serverAddr;
 	std::queue< std::string > queueUserInput;
 	std::mutex mutexUserInputQueue;

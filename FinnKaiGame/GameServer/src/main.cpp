@@ -1,14 +1,10 @@
 #pragma once
 
 #include "GameServer.h"
-#include "GameEngine.h"
 #include "Utils.h"
 
 #include <iostream>
 #include <filesystem>
-
-std::unique_ptr<GameServer> GameServer::_instance = nullptr;
-std::unique_ptr<GameEngine> GameEngine::_instance = nullptr;
 
 int main(int argc, char* argv[])
 {

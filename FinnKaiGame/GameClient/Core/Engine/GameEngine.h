@@ -13,12 +13,7 @@
 class GameEngine
 {
 public:
-    ~GameEngine() {
-        if (m_running) 
-            quit();
-        shutdown();
-        m_networkManager->update(m_running);
-    }
+    ~GameEngine() { }
 
   const int WINDOW_WIDTH = 1960;
   const int WINDOW_HEIGHT = 1080;
@@ -38,11 +33,11 @@ public:
   EntityManager* entityManager() { return m_entityManager.get(); };
   AssetManager* assetManager() { return m_assetManager.get(); }
   SceneManager* sceneManager() { return m_sceneManager.get(); }
-  NetworkManager* networkManager() { return m_networkManager.get(); }
+  NetworkManager* networkManager() { return NetworkManager::instance(); }
   bool isRunning();
 
 private:
-  static std::unique_ptr<GameEngine> _instance;
+  inline static std::unique_ptr<GameEngine> _instance = nullptr;
 
   GameEngine() : m_running(true) { init(); }
   
@@ -52,11 +47,12 @@ private:
   std::unique_ptr<AssetManager> m_assetManager;
   std::unique_ptr<EntityManager> m_entityManager;
   std::unique_ptr<SceneManager> m_sceneManager;
-  std::unique_ptr<NetworkManager> m_networkManager;
+  std::string playerName;
 
   bool m_running;
   void init();
   void update();
+  void updatePlayer(message& m);
 
  
 };

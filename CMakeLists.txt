@@ -11,14 +11,14 @@ conan_basic_setup()
 
 add_subdirectory(${PROJECT_NAME})
 
-# target_link_libraries(${PROJECT_NAME}Client optimized ${CONAN_LIBS})
-# target_link_libraries(${PROJECT_NAME}Server optimized ${CONAN_LIBS})
 
 foreach(_LIB ${CONAN_LIBS_RELEASE})
+	target_link_libraries(Common optimized ${_LIB})
 	target_link_libraries(${PROJECT_NAME}Client optimized ${_LIB})
 	target_link_libraries(${PROJECT_NAME}Server optimized ${_LIB})
 endforeach()
 foreach(_LIB ${CONAN_LIBS_DEBUG})
+	target_link_libraries(Common optimized ${_LIB})
 	target_link_libraries(${PROJECT_NAME}Client debug ${_LIB})
 	target_link_libraries(${PROJECT_NAME}Server debug ${_LIB})
 endforeach()

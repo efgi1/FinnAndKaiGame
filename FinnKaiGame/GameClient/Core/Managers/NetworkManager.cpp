@@ -3,13 +3,23 @@
 #include <SDL2/SDL_events.h>
 #include "EntityManager.h"
 
-void NetworkManager::update(bool running)
+void NetworkManager::update()
 {
-	m_running = running;
 	PollIncomingMessages();
 	PollConnectionStateChanges();
 	PollLocalUserInput();
 }
+
+void NetworkManager::SendPlayerUpdate(message& m)
+{
+	m_pInterface->SendMessageToConnection(m_hConnection, &m, sizeof(m), k_nSteamNetworkingSend_Reliable, nullptr);
+}
+
+void NetworkManager::CloseConnection()
+{
+	m_pInterface->CloseConnection(m_hConnection, 0, "Goodbye", true);
+}
+
 
 void NetworkManager::init()
 {
@@ -96,10 +106,11 @@ void NetworkManager::PollIncomingMessages()
 			Utils::FatalError("Error checking for messages");
 
 		// Just echo anything we get from the server
-		auto test = static_cast<message*>(pIncomingMsg->m_pData);
-		if (test->type == 1)
+		message test;
+		test = *static_cast<const message*>(pIncomingMsg->GetData());
+		if (test.type == 1 || test.type == 2)
 		{
-			m_messageQ.push(*test);
+			m_messageQ.push(test);
 		}
 		else
 		{
@@ -141,7 +152,7 @@ void NetworkManager::PollLocalUserInput()
 
 void NetworkManager::SteamNetConnectionStatusChangedCallback(SteamNetConnectionStatusChangedCallback_t* pInfo)
 {
-	//GameEngine::instance()->networkManager()->OnSteamNetConnectionStatusChanged(pInfo);
+	NetworkManager::instance()->OnSteamNetConnectionStatusChanged(pInfo);
 }
 
 inline void NetworkManager::OnSteamNetConnectionStatusChanged(SteamNetConnectionStatusChangedCallback_t* pInfo)
@@ -207,6 +218,7 @@ void NetworkManager::PollConnectionStateChanges()
 {
 	m_pInterface->RunCallbacks();
 }
+
 
 bool NetworkManager::LocalUserInput_GetNext(std::string& result)
 {

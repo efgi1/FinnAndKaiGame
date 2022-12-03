@@ -37,15 +37,38 @@ void GameEngine::init()
 	m_entityManager = std::make_unique<EntityManager>();
 	m_assetManager = std::make_unique<AssetManager>();
 	m_sceneManager = std::make_unique<SceneManager>();
-	m_networkManager = std::make_unique<NetworkManager>();
-	m_networkManager->init();
+	networkManager()->init();
 	
 }
 
 void GameEngine::update()
 {
 	m_sceneManager->update();
-	m_networkManager->update(m_running);
+	networkManager()->update();
+}
+
+void GameEngine::updatePlayer(message& m)
+{
+	auto view = m_entityManager->view<std::string, CTransform>();
+	bool updated = false;
+	for (auto [entity, name, transform] : view.each())
+	{
+		if (name == std::string(m.name))
+		{
+			updated = true;
+			transform.pos.x = m.x;
+			transform.pos.y = m.y;
+
+		}
+	}
+
+	if (!updated)
+	{
+		auto newPlayer = m_entityManager->create();
+		m_entityManager->emplace<std::string>(newPlayer, m.name);
+		m_entityManager->emplace<CTransform>(newPlayer, glm::vec2(m.x, m.y));
+		m_entityManager->emplace<CAnimation>(newPlayer, "kai", *(GameEngine::instance()->assetManager()->getAnimation("kai_standing")), false);
+	}
 }
 
 
@@ -60,15 +83,54 @@ void GameEngine::run()
 	while (m_running)
 	{
 		update();
-		while (!m_networkManager->m_messageQ.empty())
+		while (!networkManager()->m_messageQ.empty())
 		{
-			auto test = m_networkManager->m_messageQ.front();
-			m_networkManager->m_messageQ.pop();
-			auto newEntity = m_entityManager->create();
-			m_entityManager->emplace<std::string>(newEntity, test.name);
-			m_entityManager->emplace<CTransform>(newEntity, glm::vec2(test.x, test.y));
-			m_entityManager->emplace<CAnimation>(newEntity, "kai", *(GameEngine::instance()->assetManager()->getAnimation("kai_standing")), false);
-			m_entityManager->emplace<CInput>(newEntity);
+			auto test = networkManager()->m_messageQ.front();
+			networkManager()->m_messageQ.pop();
+			if (test.type == 1)
+			{
+				bool newPlayerEntity = m_entityManager->empty();
+				if (newPlayerEntity)
+				{
+					auto newEntity = m_entityManager->create();
+					playerName = test.name;
+					m_entityManager->emplace<std::string>(newEntity, test.name);
+					m_entityManager->emplace<CTransform>(newEntity, glm::vec2(test.x, test.y));
+					m_entityManager->emplace<CAnimation>(newEntity, "kai", *(GameEngine::instance()->assetManager()->getAnimation("kai_standing")), false);
+					m_entityManager->emplace<CInput>(newEntity);
+				}
+				else if (playerName != std::string(test.name))
+				{
+					updatePlayer(test);
+				}
+			}
+			if (test.type == 2)
+			{
+				auto view = m_entityManager->view<std::string>();
+				entt::entity toRemove;
+				for (auto [entity, name] : view.each())
+				{
+					if (name == std::string(test.name))
+					{
+						toRemove = entity;
+						break;
+
+					}
+				}
+				m_entityManager->destroy(toRemove);
+			}
+		}
+		auto view = m_entityManager->view<std::string, CTransform>();
+		for (auto [entity, name, transform] : view.each())
+		{
+			if (name == playerName && (transform.pos.x != transform.prevPos.x || transform.pos.y != transform.prevPos.y))
+			{
+				message m;
+				m.x = transform.pos.x;
+				m.y = transform.pos.y;
+				strcpy(m.name,playerName.c_str());
+				networkManager()->SendPlayerUpdate(m);
+			}
 		}
 		ImGui_ImplSDLRenderer_NewFrame();
 		ImGui_ImplSDL2_NewFrame();
@@ -88,7 +150,6 @@ void GameEngine::run()
 				if (ImGui::MenuItem("Exit"))
 				{
 					GameEngine::instance()->quit();
-					return;
 				}
 				ImGui::EndMenu();
 			}
@@ -107,7 +168,6 @@ void GameEngine::run()
 			if (ImGui::CloseButton(1, ImVec2(GameEngine::instance()->WINDOW_WIDTH - buttonWidth - frameWidth, 0)))
 			{
 				GameEngine::instance()->quit();
-				return;
 			};
 			ImGui::EndMainMenuBar();
 		}
@@ -117,6 +177,8 @@ void GameEngine::run()
 
 		SDL_RenderPresent(renderer());
 	}
+
+	shutdown();
 }
 
 void GameEngine::quit()
@@ -126,6 +188,9 @@ void GameEngine::quit()
 
 void GameEngine::shutdown()
 {
+
+	networkManager()->CloseConnection();
+
 	assetManager()->shutdown();
 	SDL_DestroyRenderer(m_renderer);
 	SDL_DestroyWindow(m_window);

@@ -3,7 +3,6 @@
 #include "GameServer.h"
 #include "Utils.h"
 #include "TransformComponent.h"
-#include "InputComponent.h"
 
 void GameServer::run()
 {
@@ -88,6 +87,7 @@ void GameServer::init()
 void GameServer::update()
 {
 	PollIncomingMessages();
+	SendEntityUpdates();
 	PollConnectionStateChanges();
 	PollLocalUserInput();
 	std::this_thread::sleep_for(std::chrono::milliseconds(10));
@@ -133,14 +133,14 @@ inline void GameServer::InitSteamDatagramConnectionSockets()
 			if (pInfo->m_info.m_eState == k_ESteamNetworkingConnectionState_ProblemDetectedLocally)
 			{
 				pszDebugLogAction = "problem detected locally";
-				sprintf(temp, "Alas, %s hath fallen into shadow.  (%s)", itClient->second.c_str(), pInfo->m_info.m_szEndDebug);
+				sprintf(temp, "Alas, %s hath fallen into shadow.  (%s)", pInfo->m_info.m_szConnectionDescription, pInfo->m_info.m_szEndDebug);
 			}
 			else
 			{
 				// Note that here we could check the reason code to see if
 				// it was a "usual" connection or an "unusual" one.
 				pszDebugLogAction = "closed by peer";
-				sprintf(temp, "%s hath departed", itClient->second.c_str());
+				sprintf(temp, "%s hath departed", pInfo->m_info.m_szConnectionDescription);
 			}
 
 			// Spew something to our own log.  Note that because we put their nick
@@ -153,10 +153,12 @@ inline void GameServer::InitSteamDatagramConnectionSockets()
 				pInfo->m_info.m_szEndDebug
 			);
 
-			m_mapClients.erase(itClient);
-
+			
 			// Send a message so everybody else knows what happened
 			SendStringToAllClients(temp);
+			SendRemoveEntityToAllClients(itClient->first, itClient->second);
+			m_entityManager->destroy(itClient->second);
+			m_mapClients.erase(itClient);
 		}
 		else
 		{
@@ -232,14 +234,13 @@ void GameServer::initNewConnection(SteamNetConnectionStatusChangedCallback_t* pI
 	auto newPlayer = m_entityManager->create();
 	m_entityManager->emplace<std::string>(newPlayer, m.name);
 	m_entityManager->emplace<CTransform>(newPlayer, glm::vec2(m.x, m.y));
-	m_entityManager->emplace<CInput>(newPlayer);
 
 
 	// Send them a welcome message
 	sprintf(temp, "Welcome, stranger.  Thou art known to us for now as '%s'; upon thine command '/nick' we shall know thee otherwise.", nick);
 	SendStringToClient(pInfo->m_hConn, temp);
 	// Send client's entity to client
-	m_pInterface->SendMessageToConnection(pInfo->m_hConn, &m, m.getSize(), k_nSteamNetworkingSend_Reliable, nullptr);
+	m_pInterface->SendMessageToConnection(pInfo->m_hConn, &m, sizeof(m), k_nSteamNetworkingSend_Reliable, nullptr);
 
 	// Also send them a list of everybody who is already connected
 	if (m_mapClients.empty())
@@ -249,37 +250,15 @@ void GameServer::initNewConnection(SteamNetConnectionStatusChangedCallback_t* pI
 	else
 	{
 		sprintf(temp, "%d companions greet you:", (int)m_mapClients.size());
-		for (auto& c : m_mapClients)
-		{
-			SendStringToClient(pInfo->m_hConn, c.second.c_str());
-			// Send all currently connected entities to client
-			message m2;
-			sprintf(m2.name, "BraveWarrior%d", 10000 + (rand() % 100000));
-			m2.x = 100.f;
-			m2.y = 100.f;
-			m_pInterface->SendMessageToConnection(pInfo->m_hConn, &m2, m2.getSize(), k_nSteamNetworkingSend_Reliable, nullptr);
-		}
 	}
 
 	// Let everybody else know who they are for now
 	sprintf(temp, "Hark!  A stranger hath joined this merry host.  For now we shall call them '%s'", nick);
 	SendStringToAllClients(temp, pInfo->m_hConn);
-	for (auto& c : m_mapClients)
-	{
-		message m;
-		sprintf(m.name, "BraveWarrior%d", 10000 + (rand() % 100000));
-		m.x = 100.f;
-		m.y = 100.f;
-		if (c.first != pInfo->m_hConn)
-		{
-			// send client's entity to currently connected
-			m_pInterface->SendMessageToConnection(c.first, &m, m.getSize(), k_nSteamNetworkingSend_Reliable, nullptr);
-		}
-	}
 
 	// Add them to the client list, using std::map wacky syntax
 	m_mapClients[pInfo->m_hConn];
-	SetClientNick(pInfo->m_hConn, nick);
+	SetClientNick(pInfo->m_hConn, nick, newPlayer);
 
 	return;
 }
@@ -349,6 +328,28 @@ void GameServer::SendStringToAllClients(const char* str, HSteamNetConnection exc
 			SendStringToClient(c.first, str);
 	}
 }
+
+void GameServer::SendEntityUpdates()
+{
+	for (auto& c : m_mapClients)
+	{
+		auto view = m_entityManager->view<std::string, CTransform>();
+		for (auto [entity, name, transform] : view.each())
+		{
+			if(abs(transform.pos.x - transform.prevPos.x) > 1 || abs(transform.pos.x - transform.prevPos.x) > 1)
+			{
+				message m;
+				m.x = transform.pos.x;
+				m.y = transform.pos.y;
+				m.type = 1;
+				strcpy(m.name, name.c_str());
+
+				m_pInterface->SendMessageToConnection(c.first, &m, sizeof(m), k_nSteamNetworkingSend_Reliable, nullptr);
+			}
+		}
+	}
+}
+
  void GameServer::PollIncomingMessages()
 {
 	char temp[1024];
@@ -366,9 +367,7 @@ void GameServer::SendStringToAllClients(const char* str, HSteamNetConnection exc
 		assert(itClient != m_mapClients.end());
 
 		// '\0'-terminate it to make it easier to parse
-		std::string sCmd;
-		sCmd.assign((const char*)pIncomingMsg->m_pData, pIncomingMsg->m_cbSize);
-		const char* cmd = sCmd.c_str();
+		message m = *static_cast<message*>(pIncomingMsg->m_pData);
 
 		// We don't need this anymore.
 		pIncomingMsg->Release();
@@ -376,28 +375,15 @@ void GameServer::SendStringToAllClients(const char* str, HSteamNetConnection exc
 		// Check for known commands.  None of this example code is secure or robust.
 		// Don't write a real server like this, please.
 
-		if (strncmp(cmd, "/nick", 5) == 0)
+		auto view = m_entityManager->view<std::string, CTransform>();
+		for (auto [entity, name, transform] : view.each())
 		{
-			const char* nick = cmd + 5;
-			while (isspace(*nick))
-				++nick;
-
-			// Let everybody else know they changed their name
-			sprintf(temp, "%s shall henceforth be known as %s", itClient->second.c_str(), nick);
-			SendStringToAllClients(temp, itClient->first);
-
-			// Respond to client
-			sprintf(temp, "Ye shall henceforth be known as %s", nick);
-			SendStringToClient(itClient->first, temp);
-
-			// Actually change their name
-			SetClientNick(itClient->first, nick);
-			continue;
+			if (name == std::string(m.name))
+			{
+				transform.pos.x = m.x;
+				transform.pos.y = m.y;
+			}
 		}
-
-		// Assume it's just a ordinary chat message, dispatch to everybody else
-		sprintf(temp, "%s: %s", itClient->second.c_str(), cmd);
-		SendStringToAllClients(temp, itClient->first);
 	}
 }
 
@@ -418,12 +404,27 @@ void GameServer::PollLocalUserInput()
 	}
 }
 
-void GameServer::SetClientNick(HSteamNetConnection hConn, const char* nick)
+void GameServer::SetClientNick(HSteamNetConnection hConn, const char* nick, entt::entity newPlayer)
 {
 
 	// Remember their nick
-	m_mapClients[hConn] = nick;
+	m_mapClients[hConn] = newPlayer;
 
 	// Set the connection name, too, which is useful for debugging
 	m_pInterface->SetConnectionName(hConn, nick);
 }
+
+void GameServer::SendRemoveEntityToAllClients(HSteamNetConnection except, entt::entity toRemove)
+{
+	for (auto& c : m_mapClients)
+	{
+		if (c.first != except)
+		{
+			message m;
+			m.type = 2;
+			strcpy(m.name, m_entityManager->get<std::string>(toRemove).c_str());
+			m_pInterface->SendMessageToConnection(c.first, &m, sizeof(m), k_nSteamNetworkingSend_Reliable, nullptr);
+		}
+	}
+}
+

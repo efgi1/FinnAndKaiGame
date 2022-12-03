@@ -30,12 +30,12 @@ public:
 
   static void SteamNetConnectionStatusChangedCallback(SteamNetConnectionStatusChangedCallback_t* pInfo);
 private:
-  static std::unique_ptr<GameServer> _instance;
+  inline static std::unique_ptr<GameServer> _instance = nullptr;
   uint16 DEFAULT_SERVER_PORT = 27020U;
   HSteamListenSocket m_hListenSock;
   HSteamNetPollGroup m_hPollGroup;
   ISteamNetworkingSockets* m_pInterface;
-  std::map< HSteamNetConnection, std::string> m_mapClients;
+  std::map< HSteamNetConnection, entt::entity> m_mapClients;
   std::thread* s_pThreadUserInput = nullptr;
   std::queue< std::string > queueUserInput;
   std::mutex mutexUserInputQueue;
@@ -60,8 +60,10 @@ private:
   bool LocalUserInput_GetNext(std::string& result);
   void SendStringToClient(HSteamNetConnection conn, const char* str);
   void SendStringToAllClients(const char* str, HSteamNetConnection except = k_HSteamNetConnection_Invalid);
+  void SendEntityUpdates();
   void PollIncomingMessages();
   void PollLocalUserInput();
-  void SetClientNick(HSteamNetConnection hConn, const char* nick);
+  void SetClientNick(HSteamNetConnection hConn, const char* nick, entt::entity newPlayer);
+  void SendRemoveEntityToAllClients(HSteamNetConnection except, entt::entity);
 
 };
